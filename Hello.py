@@ -13,39 +13,63 @@
 # limitations under the License.
 
 import streamlit as st
-from streamlit.logger import get_logger
-
-LOGGER = get_logger(__name__)
-
-
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
-
-    st.write("# Welcome to Streamlit! 👋")
-
-    st.sidebar.success("Select a demo above.")
-
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
+import streamlit_authenticator as stauth
+from dependancies import sign_up, fetch_users
 
 
-if __name__ == "__main__":
-    run()
+st.set_page_config(page_title='Streamlit', page_icon='🐍', initial_sidebar_state='collapsed')
+
+
+try:
+    users = fetch_users()
+    emails = []
+    usernames = []
+    passwords = []
+
+    for user in users:
+        emails.append(user['key'])
+        usernames.append(user['username'])
+        passwords.append(user['password'])
+
+    credentials = {'usernames': {}}
+    for index in range(len(emails)):
+        credentials['usernames'][usernames[index]] = {'name': emails[index], 'password': passwords[index]}
+
+    Authenticator = stauth.Authenticate(credentials, cookie_name='Streamlit', key='abcdef', cookie_expiry_days=4)
+
+    email, authentication_status, username = Authenticator.login(':green[Login]', 'main')
+
+    info, info1 = st.columns(2)
+
+    if not authentication_status:
+        sign_up()
+
+    if username:
+        if username in usernames:
+            if authentication_status:
+                # let User see app
+                st.sidebar.subheader(f'Welcome {username}')
+                Authenticator.logout('Log Out', 'sidebar')
+
+                st.subheader('This is the home page')
+                st.markdown(
+                    """
+                    ---
+                    Created with ❤️ by SnakeByte
+                    
+                    """
+                )
+
+            elif not authentication_status:
+                with info:
+                    st.error('Incorrect Password or username')
+            else:
+                with info:
+                    st.warning('Please feed in your credentials')
+        else:
+            with info:
+                st.warning('Username does not exist, Please Sign up')
+
+
+except:
+    st.success('Refresh Page')
