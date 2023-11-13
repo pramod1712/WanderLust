@@ -1,7 +1,7 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 #import trip_planner_app.streamlit_authenticator as stauth
-from main.dependancies import sign_up, fetch_users
+from dependancies import sign_up, fetch_users
 
 
 st.set_page_config(page_title='Trip Planner', page_icon='🐍', initial_sidebar_state='collapsed')
