@@ -14,9 +14,9 @@ db = deta.Base('StreamlitAuth')
 def insert_user(email, username, password):
     """
     Inserts Users into the DB
-    :param email:cse@pes.edu
-    :param username:csepes
-    :param password:cse@2021
+    :param email:
+    :param username:
+    :param password:
     :return User Upon successful Creation:
     """
     date_joined = str(datetime.datetime.now())
