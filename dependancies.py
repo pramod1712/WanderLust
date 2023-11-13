@@ -4,19 +4,19 @@ import datetime
 import re
 from deta import Deta
 
-DETA_KEY = 'YOUR_DETA_KEY'
+DETA_KEY = 'd0dcu4dmndq_wYDzZtDV5VHNrqrbrZYpGF6TH5H9vphv'
 
 deta = Deta(DETA_KEY)
 
-db = deta.Base('YOUR_DETA_BASE')
+db = deta.Base('StreamlitAuth')
 
 
 def insert_user(email, username, password):
     """
     Inserts Users into the DB
-    :param email:
-    :param username:
-    :param password:
+    :param email:cse@pes.edu
+    :param username:csepes
+    :param password:cse@2021
     :return User Upon successful Creation:
     """
     date_joined = str(datetime.datetime.now())
