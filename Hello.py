@@ -6,7 +6,7 @@ import sqlite3
 try:
     #con = sqlite3.connect('trip_planner2.db')
     #cur = con.cursor()
-    con = st.connection('trip_planner2_db', type='sql')
+    con = st.connection('trip_planner2', type='sql')
 except:
     st.error("could not connect to database")
 
