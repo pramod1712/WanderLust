@@ -8,7 +8,7 @@ try:
     #cur = con.cursor()
     con = st.connection('trip_planner2_db', type='sql')
 except:
-    print("could not connect to database")
+    st.error("could not connect to database")
 
 st.set_page_config(page_title='Trip Planner', page_icon='🐍', initial_sidebar_state='collapsed')
 
