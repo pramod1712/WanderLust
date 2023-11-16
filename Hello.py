@@ -1,6 +1,5 @@
 import streamlit as st
 import streamlit_authenticator as stauth
-#import trip_planner_app.streamlit_authenticator as stauth
 from dependancies import sign_up, fetch_users
 
 
@@ -38,14 +37,23 @@ try:
                 st.sidebar.subheader(f'Welcome {username}')
                 Authenticator.logout('Log Out', 'sidebar')
 
-                st.subheader('This is the home page')
-                st.markdown(
-                    """
-                    ---
-                    Created with ❤️ by Pramod & Kanith
-                    
-                    """
-                )
+                st.title("Trip Planner and Management System")
+
+                st.write("Plan and manage your trips with ease!")
+                
+                start_date = st.date_input("Select the start date:")
+                end_date = st.date_input("Select the end date:")
+
+
+                if st.button("Plan My Trip"):
+                    st.success(
+                        f"Trip planned from {start_date} to {end_date}")
+
+
+                st.info("Explore our amazing features and make your trips memorable!")
+
+                st.markdown("---")
+                st.write("© 2023 Trip Planner App. All rights reserved.")
 
             elif not authentication_status:
                 with info:
@@ -60,3 +68,9 @@ try:
 
 except:
     st.success('Refresh Page')
+
+
+"""
+source = st.text_input("Enter your source:", "")
+destination = st.text_input("Enter your destination:", "")
+"""
