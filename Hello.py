@@ -56,6 +56,8 @@ try:
                 trip_table = con.execute('select * from Destination')
                 data2 = trip_table.fetchall()
                 
+                option = st.selectbox('How would you like to be contacted?',('Email', 'Home phone', 'Mobile phone'))
+                st.write('You selected:', option)
                 st.dataframe(data1)
                 st.dataframe(data2)
                 
