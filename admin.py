@@ -1,12 +1,12 @@
 import streamlit as st
 import streamlit_authenticator as stauth
-from dependancies import sign_up, fetch_users
+from dependancies_admin import sign_up, fetch_users
 import sqlite3
 
 try:
     con = sqlite3.connect('trip_planner2.db')
     cur = con.cursor()
-    print("connected")
+    #print("connected")
     #con = st.connection('trip_planner2', type='sql')
 except:
     st.error("could not connect to database")

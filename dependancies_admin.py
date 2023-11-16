@@ -4,14 +4,11 @@ import datetime
 import re
 from deta import Deta
 
-DETA_KEY = 'd0dcu4dmndq_wYDzZtDV5VHNrqrbrZYpGF6TH5H9vphv'
-#DETA_KEY_ADMIN = 'd029nxxjmxf_f592BNXFs8XV33y7fDgyGYNi3XtWJckT'
+DETA_KEY_ADMIN = 'd029nxxjmxf_f592BNXFs8XV33y7fDgyGYNi3XtWJckT'
 
-deta = Deta(DETA_KEY)
-#deta2 = Deta(DETA_KEY_ADMIN)
+deta_admin = Deta(DETA_KEY_ADMIN)
 
-db = deta.Base('StreamlitAuth')
-#admin_db = deta.Base('Admin_Creds')
+admin_db = deta_admin.Base('Admin_Creds')
 
 
 def insert_user(email, username, password):
@@ -24,7 +21,7 @@ def insert_user(email, username, password):
     """
     date_joined = str(datetime.datetime.now())
 
-    return db.put({'key': email, 'username': username, 'password': password, 'date_joined': date_joined})
+    return admin_db.put({'key': email, 'username': username, 'password': password, 'date_joined': date_joined})
 
 
 def fetch_users():
@@ -32,7 +29,7 @@ def fetch_users():
     Fetch Users
     :return Dictionary of Users:
     """
-    users = db.fetch()
+    users = admin_db.fetch()
     return users.items
 
 
@@ -41,7 +38,7 @@ def get_user_emails():
     Fetch User Emails
     :return List of user emails:
     """
-    users = db.fetch()
+    users = admin_db.fetch()
     emails = []
     for user in users.items:
         emails.append(user['key'])
@@ -53,7 +50,7 @@ def get_usernames():
     Fetch Usernames
     :return List of user usernames:
     """
-    users = db.fetch()
+    users = admin_db.fetch()
     usernames = []
     for user in users.items:
         usernames.append(user['key'])

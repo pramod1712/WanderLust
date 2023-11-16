@@ -1,6 +1,6 @@
 import sqlite3
 
-con = sqlite3.connect('trip_planner2.db')
+con = sqlite3.connect('trip_plannerr1.db')
 cur = con.cursor()
 
 cur.execute("""
@@ -28,11 +28,36 @@ INSERT INTO Trip (TripID, TripName, RecommendedStartMonth, RecommendedEndMonth, 
 """)
 
 cur.execute("""
-INSERT INTO Accomodation (AccomodationID, Name, Type, Location, Cost) VALUES
-('IN_1_AG', 'Taj Mahal Palace', 'Hotel', 'Agra, India', 5000),
-('US_1_GC', 'El Tovar Hotel', 'Hotel', 'Grand Canyon National Park, USA', 3000),
-('FR_1_ET', 'Hotel Plaza Athénée', 'Hotel', 'Paris, France', 6000),
-('IT_1_CV', 'Hotel Raphael', 'Hotel', 'Rome, Italy', 4500)
+INSERT INTO Destination (TripID, DestinationID, Name, Country, City, Description) VALUES
+('IN_1', 'IN_AG_1', 'Taj Mahal', 'India', 'Agra', 'An iconic white marble mausoleum, the Taj Mahal is a UNESCO World Heritage Site and one of the most recognizable landmarks in the world. Built by Mughal Emperor Shah Jahan in memory of his beloved wife Mumtaz Mahal, the Taj Mahals intricate architecture, delicate carvings, and serene gardens make it a masterpiece of Mughal art and a testament to eternal love'),
+('IN_1', 'IN_AG_2', 'Agra Fort', 'India', 'Agra', 'A UNESCO World Heritage Site, Agra Fort is a 16th-century Mughal fort that served as the primary residence of the Mughal emperors until 1678. Its iconic red sandstone walls and white marble pavilions showcase the architectural brilliance of the Mughal era. The forts intricate carvings, grand courtyards, and beautifully landscaped gardens make it a must-visit destination for anyone exploring Indias rich heritage'),
+('IN_1', 'IN_AG_3', 'Mehtab Bagh', 'India', 'Agra', 'Mehtab Bagh, also known as the Moonlight Garden, is a Mughal-era garden complex located across the Yamuna River from the Taj Mahal. Originally constructed in the 16th century by Emperor Akbar, Mehtab Bagh served as a pleasure garden for the Mughal emperors and their families. Today, it offers serene surroundings and breathtaking views of the Taj Mahal, making it a popular spot for photography and relaxation'),
+('IN_1', 'IN_AG_4', 'Jama Masjid', 'India', 'Agra', 'Jama Masjid is a 17th-century mosque located in the heart of Agra. Built by Mughal Emperor Shah Jahan, the mosque is renowned for its red sandstone and white marble architecture, reminiscent of the Taj Mahal. Its spacious courtyard can accommodate up to 25,000 worshippers, making it one of the largest mosques in India. The mosques intricate carvings, towering minarets, and serene atmosphere make it a significant religious and cultural landmark in Agra'),
+            
+('US_1', 'US_GC_1', 'Grand Canyon National Park', 'USA', 'Arizona', 'A UNESCO World Heritage Site and one of the Seven Natural Wonders of the World, the Grand Canyon is a vast natural wonder that has captivated visitors for centuries. Carved over millions of years by the Colorado River, the canyons layers of rock reveal a rich geological history and offer breathtaking views of colorful cliffs, deep gorges, and diverse plant life. Hiking, mule rides, and helicopter tours provide unique perspectives on the canyons grandeur, while stargazing under the vast desert sky offers an unforgettable experience'),
+('US_1', 'US_GC_01', 'South Rim', 'USA', 'Arizona', 'The most popular rim of the canyon, the South Rim offers stunning views of the canyons vast expanse and colorful rock layers. Its home to Grand Canyon Village, a hub of visitor services, restaurants, and hotels'),
+('US_1', 'US_GC_02', 'North Rim', 'USA', 'Arizona', 'Less crowded and more secluded than the South Rim, the North Rim provides a different perspective of the canyon, with fewer developed areas and more opportunities for wildlife viewing'),
+('US_1', 'US_GC_03', 'Desert View Watchtower', 'USA', 'Arizona', 'Perched atop a butte near the East Entrance, the Desert View Watchtower offers panoramic views of the canyon, including the Painted Desert and the Colorado River'),
+('US_1', 'US_GC_04', 'Phantom Ranch', 'USA', 'Arizona', 'A secluded oasis nestled at the bottom of the canyon, Phantom Ranch is accessible by mule ride or hiking. Its a popular spot for overnight stays and offers a variety of activities, including hiking, rafting, and mule rides'),
+            
+('FR_1', 'FR_ET_01', 'Eiffel Tower', 'France', 'Paris', 'The iconic wrought-iron lattice tower is the tallest structure in Paris and one of the most recognizable landmarks in the world. Visitors can ascend to the top for panoramic views of the city'),
+('FR_1', 'FR_ET_02', 'Champ de Mars', 'France', 'Paris', 'The sprawling park surrounding the Eiffel Tower is a popular spot for picnicking, sunbathing, and enjoying the views. Its also home to the Arc de Triomphe, a triumphal arch commemorating French military victories'),
+('FR_1', 'FR_ET_03', 'Musée du Louvre', 'France', 'Paris', 'One of the worlds largest and most famous museums, the Louvre houses a vast collection of art, including Leonardo da Vincis Mona Lisa'),
+('FR_1', 'FR_ET_04', 'Notre Dame Cathedral', 'France', 'Paris', 'A historic Gothic cathedral known for its stained glass windows and architectural beauty'),
+('FR_1', 'FR_ET_05', 'Palace of Versailles', 'France', 'Versailles', 'A former royal residence located outside of Paris, the Palace of Versailles is known for its opulent architecture, lavish gardens, and grand fountains'),
+            
+('JP_1', 'JP_MT_01', 'Mount Fuji', 'Japan', 'Fujinomiya', 'An active volcano and Japans highest mountain, Mount Fuji is a revered symbol of beauty and tranquility. Visitors can hike to the summit or enjoy the views from lower elevations'),
+('JP_1', 'JP_TK_01', 'Shibuya Crossing', 'Japan', 'Tokyo', 'One of the busiest pedestrian crossings in the world, Shibuya Crossing is a mesmerizing spectacle of synchronized movement and urban energy'),
+('JP_1', 'JP_TK_02', 'Sensō-ji Temple', 'Japan', 'Tokyo', 'Tokyos oldest temple, Sensō-ji is a vibrant center of Buddhist worship and traditional culture'),
+('JP_1', 'JP_TK_03', 'Tokyo Skytree', 'Japan', 'Tokyo', 'The tallest structure in Japan, the Tokyo Skytree offers panoramic views of the city and a glimpse into its futuristic skyline');
+""")
+
+cur.execute("""
+INSERT INTO Accomodation (TripID, AccomodationID, Name, Type, Location, Cost) VALUES
+('IN_1', 'IN_1_AG', 'Taj Mahal Palace', 'Hotel', 'Agra, India', 5000),
+('US_1', 'US_1_GC', 'El Tovar Hotel', 'Hotel', 'Grand Canyon National Park, USA', 3000),
+('FR_1', 'FR_1_ET', 'Hotel Plaza Athénée', 'Hotel', 'Paris, France', 6000),
+('IT_1', 'IT_1_CV', 'Hotel Raphael', 'Hotel', 'Rome, Italy', 4500)
 """)
 
 cur.execute("""
@@ -78,29 +103,6 @@ VALUES ('US_NYC_1', '2023-11-15', 55, 'Partly cloudy'),
 ('IT_ROM_5', '2023-11-19', 63, 'Mostly sunny');
 """)
 
-cur.execute("""
-INSERT INTO Destination (DestinationID, Name, Country, City, Description) VALUES
-('IN_AG_1', 'Taj Mahal', 'India', 'Agra', 'An iconic white marble mausoleum, the Taj Mahal is a UNESCO World Heritage Site and one of the most recognizable landmarks in the world. Built by Mughal Emperor Shah Jahan in memory of his beloved wife Mumtaz Mahal, the Taj Mahals intricate architecture, delicate carvings, and serene gardens make it a masterpiece of Mughal art and a testament to eternal love'),
-('IN_AG_2', 'Agra Fort', 'India', 'Agra', 'A UNESCO World Heritage Site, Agra Fort is a 16th-century Mughal fort that served as the primary residence of the Mughal emperors until 1678. Its iconic red sandstone walls and white marble pavilions showcase the architectural brilliance of the Mughal era. The forts intricate carvings, grand courtyards, and beautifully landscaped gardens make it a must-visit destination for anyone exploring Indias rich heritage'),
-('IN_AG_3', 'Mehtab Bagh', 'India', 'Agra', 'Mehtab Bagh, also known as the Moonlight Garden, is a Mughal-era garden complex located across the Yamuna River from the Taj Mahal. Originally constructed in the 16th century by Emperor Akbar, Mehtab Bagh served as a pleasure garden for the Mughal emperors and their families. Today, it offers serene surroundings and breathtaking views of the Taj Mahal, making it a popular spot for photography and relaxation'),
-('IN_AG_4', 'Jama Masjid', 'India', 'Agra', 'Jama Masjid is a 17th-century mosque located in the heart of Agra. Built by Mughal Emperor Shah Jahan, the mosque is renowned for its red sandstone and white marble architecture, reminiscent of the Taj Mahal. Its spacious courtyard can accommodate up to 25,000 worshippers, making it one of the largest mosques in India. The mosques intricate carvings, towering minarets, and serene atmosphere make it a significant religious and cultural landmark in Agra'),
-            
-('US_GC_1', 'Grand Canyon National Park', 'USA', 'Arizona', 'A UNESCO World Heritage Site and one of the Seven Natural Wonders of the World, the Grand Canyon is a vast natural wonder that has captivated visitors for centuries. Carved over millions of years by the Colorado River, the canyons layers of rock reveal a rich geological history and offer breathtaking views of colorful cliffs, deep gorges, and diverse plant life. Hiking, mule rides, and helicopter tours provide unique perspectives on the canyons grandeur, while stargazing under the vast desert sky offers an unforgettable experience'),
-('US_GC_01', 'South Rim', 'USA', 'Arizona', 'The most popular rim of the canyon, the South Rim offers stunning views of the canyons vast expanse and colorful rock layers. Its home to Grand Canyon Village, a hub of visitor services, restaurants, and hotels'),
-('US_GC_02', 'North Rim', 'USA', 'Arizona', 'Less crowded and more secluded than the South Rim, the North Rim provides a different perspective of the canyon, with fewer developed areas and more opportunities for wildlife viewing'),
-('US_GC_03', 'Desert View Watchtower', 'USA', 'Arizona', 'Perched atop a butte near the East Entrance, the Desert View Watchtower offers panoramic views of the canyon, including the Painted Desert and the Colorado River'),
-('US_GC_04', 'Phantom Ranch', 'USA', 'Arizona', 'A secluded oasis nestled at the bottom of the canyon, Phantom Ranch is accessible by mule ride or hiking. Its a popular spot for overnight stays and offers a variety of activities, including hiking, rafting, and mule rides'),
-            
-('FR_ET_01', 'Eiffel Tower', 'France', 'Paris', 'The iconic wrought-iron lattice tower is the tallest structure in Paris and one of the most recognizable landmarks in the world. Visitors can ascend to the top for panoramic views of the city'),
-('FR_ET_02', 'Champ de Mars', 'France', 'Paris', 'The sprawling park surrounding the Eiffel Tower is a popular spot for picnicking, sunbathing, and enjoying the views. Its also home to the Arc de Triomphe, a triumphal arch commemorating French military victories'),
-('FR_ET_03', 'Musée du Louvre', 'France', 'Paris', 'One of the worlds largest and most famous museums, the Louvre houses a vast collection of art, including Leonardo da Vincis Mona Lisa'),
-('FR_ET_04', 'Notre Dame Cathedral', 'France', 'Paris', 'A historic Gothic cathedral known for its stained glass windows and architectural beauty'),
-('FR_ET_05', 'Palace of Versailles', 'France', 'Versailles', 'A former royal residence located outside of Paris, the Palace of Versailles is known for its opulent architecture, lavish gardens, and grand fountains'),
-            
-('JP_MT_01', 'Mount Fuji', 'Japan', 'Fujinomiya', 'An active volcano and Japans highest mountain, Mount Fuji is a revered symbol of beauty and tranquility. Visitors can hike to the summit or enjoy the views from lower elevations'),
-('JP_TK_01', 'Shibuya Crossing', 'Japan', 'Tokyo', 'One of the busiest pedestrian crossings in the world, Shibuya Crossing is a mesmerizing spectacle of synchronized movement and urban energy'),
-('JP_TK_02', 'Sensō-ji Temple', 'Japan', 'Tokyo', 'Tokyos oldest temple, Sensō-ji is a vibrant center of Buddhist worship and traditional culture'),
-('JP_TK_03', 'Tokyo Skytree', 'Japan', 'Tokyo', 'The tallest structure in Japan, the Tokyo Skytree offers panoramic views of the city and a glimpse into its futuristic skyline');
-""")
 
 con.commit()
+print("done")

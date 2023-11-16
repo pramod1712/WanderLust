@@ -1,3 +1,6 @@
 # customise trip-budget according to location
 # make transportation table realtime
 # display db connection error so error doesn't propogate
+# user - suggest trip/destination feature to admin, report issues, find help option
+# suggest travel options in proximity to the current destination (like half way of a trip, can abort and travel back)
+# 

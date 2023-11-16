@@ -1,6 +1,6 @@
 import sqlite3
 
-con = sqlite3.connect('trip_planner2.db')
+con = sqlite3.connect('trip_plannerr1.db')
 cur = con.cursor()
 
 # add attribute to store user's country - to adjust prices, currencies
@@ -23,17 +23,33 @@ CREATE TABLE IF NOT EXISTS Trip (
 ''')
 
 cur.execute('''
+CREATE TABLE IF NOT EXISTS Destination (
+  TripID TEXT,
+  DestinationID TEXT PRIMARY KEY,
+  Name TEXT NOT NULL,
+  Country TEXT NOT NULL,
+  City TEXT NOT NULL,
+  Description TEXT,
+  foreign key (TripID) references Trip(TripID) 
+)
+''')
+
+
+cur.execute('''
 CREATE TABLE IF NOT EXISTS Accomodation (
+  TripID TEXT,
   AccomodationID TEXT PRIMARY KEY,
   Name TEXT NOT NULL,
   Type TEXT NOT NULL,
   Location TEXT NOT NULL,
-  Cost NUMERIC(10,2)
+  Cost NUMERIC(10,2),
+  foreign key (TripID) references Trip(TripID) 
 )
 ''')
 
 cur.execute('''
 CREATE TABLE IF NOT EXISTS Transportation (
+            
   TransportID TEXT PRIMARY KEY,
   Mode TEXT NOT NULL,
   DepartureDatetime DATETIME NOT NULL,
@@ -74,12 +90,3 @@ CREATE TABLE IF NOT EXISTS Weather (
 )
 ''')
 
-cur.execute('''
-CREATE TABLE IF NOT EXISTS Destination (
-  DestinationID TEXT PRIMARY KEY,
-  Name TEXT NOT NULL,
-  Country TEXT NOT NULL,
-  City TEXT NOT NULL,
-  Description TEXT
-)
-''')
