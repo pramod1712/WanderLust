@@ -1,5 +1,4 @@
 SQLAlchemy==1.4.0
-sqlite3
 mysql-connector-python
 streamlit_authenticator==0.2.2
 altair==5.0.1
