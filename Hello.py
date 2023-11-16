@@ -1,7 +1,14 @@
 import streamlit as st
 import streamlit_authenticator as stauth
 from dependancies import sign_up, fetch_users
+import sqlite3
 
+try:
+    #con = sqlite3.connect('trip_planner2.db')
+    #cur = con.cursor()
+    con = st.connection('trip_planner2_db', type='sql')
+except:
+    print("could not connect to database")
 
 st.set_page_config(page_title='Trip Planner', page_icon='🐍', initial_sidebar_state='collapsed')
 
@@ -43,7 +50,8 @@ try:
                 
                 start_date = st.date_input("Select the start date:")
                 end_date = st.date_input("Select the end date:")
-
+                trip_table = con.query('select * from trip')
+                st.dataframe(trip_table)
 
                 if st.button("Plan My Trip"):
                     st.success(

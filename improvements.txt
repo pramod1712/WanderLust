@@ -1,2 +1,3 @@
 # customise trip-budget according to location
 # make transportation table realtime
+# display db connection error so error doesn't propogate
