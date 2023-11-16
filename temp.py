@@ -60,3 +60,8 @@ else:
     print("no error")
 
 """
+
+"""
+source = st.text_input("Enter your source:", "")
+destination = st.text_input("Enter your destination:", "")
+"""

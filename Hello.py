@@ -4,9 +4,10 @@ from dependancies import sign_up, fetch_users
 import sqlite3
 
 try:
-    #con = sqlite3.connect('trip_planner2.db')
-    #cur = con.cursor()
-    con = st.connection('trip_planner2', type='sql')
+    con = sqlite3.connect('trip_planner2.db')
+    cur = con.cursor()
+    print("connected")
+    #con = st.connection('trip_planner2', type='sql')
 except:
     st.error("could not connect to database")
 
@@ -50,8 +51,14 @@ try:
                 
                 start_date = st.date_input("Select the start date:")
                 end_date = st.date_input("Select the end date:")
-                trip_table = con.query('select * from trip')
-                st.dataframe(trip_table)
+                trip_table = con.execute('select * from trip')
+                data1 = trip_table.fetchall()
+                trip_table = con.execute('select * from Destination')
+                data2 = trip_table.fetchall()
+                
+                st.dataframe(data1)
+                st.dataframe(data2)
+                
 
                 if st.button("Plan My Trip"):
                     st.success(
@@ -76,9 +83,3 @@ try:
 
 except:
     st.success('Refresh Page')
-
-
-"""
-source = st.text_input("Enter your source:", "")
-destination = st.text_input("Enter your destination:", "")
-"""
