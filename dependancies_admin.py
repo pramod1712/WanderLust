@@ -85,7 +85,7 @@ def validate_username(username):
 
 def sign_up():
     with st.form(key='signup', clear_on_submit=True):
-        st.subheader(':green[Sign Up]')
+        st.subheader(':orange[Sign Up]')
         email = st.text_input(':blue[Email]', placeholder='Enter Your Email')
         username = st.text_input(':blue[Username]', placeholder='Enter Your Username')
         password1 = st.text_input(':blue[Password]', placeholder='Enter Your Password', type='password')

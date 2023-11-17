@@ -6,12 +6,13 @@ import sqlite3
 try:
     con = sqlite3.connect('trip_planner2.db')
     cur = con.cursor()
-    #print("connected")
+    print("connected")
     #con = st.connection('trip_planner2', type='sql')
 except:
     st.error("could not connect to database")
 
-st.set_page_config(page_title='Trip Planner', page_icon='✈', initial_sidebar_state='collapsed')
+st.set_page_config(page_title='WanderLust Admin', page_icon='🦸‍♂️', initial_sidebar_state='expanded')
+st.title("WanderLust Admin Panel")
 
 
 try:
@@ -29,9 +30,9 @@ try:
     for index in range(len(emails)):
         credentials['usernames'][usernames[index]] = {'name': emails[index], 'password': passwords[index]}
 
-    Authenticator = stauth.Authenticate(credentials, cookie_name='Streamlit', key='abcdef', cookie_expiry_days=4)
+    Authenticator = stauth.Authenticate(credentials, cookie_name='TripPlannerAdmin', key='abcdef', cookie_expiry_days=1)
 
-    email, authentication_status, username = Authenticator.login(':green[Login]', 'main')
+    email, authentication_status, username = Authenticator.login(':orange[Login]', 'main')
 
     info, info1 = st.columns(2)
 
@@ -42,35 +43,34 @@ try:
         if username in usernames:
             if authentication_status:
                 # let User see app
-                st.sidebar.subheader(f'Welcome {username}')
+                st.sidebar.subheader(f'Welcome Admin {username}')
                 Authenticator.logout('Log Out', 'sidebar')
 
-                st.title("Trip Planner and Management System")
-
-                st.write("Plan and manage your trips with ease!")
-                
-                start_date = st.date_input("Select the start date:")
-                end_date = st.date_input("Select the end date:")
+                #st.title("WanderLust Admin Panel")
 
                 # Fetch data from the 'trip' table
-                trip_data = con.execute('select TripName from trip').fetchall()
+
+                #trip_data = con.execute('select TripName from trip').fetchall()
 
                 # Extract the TripName values from the result set
-                trip_names = [row[0] for row in trip_data]
-
-                # Streamlit app
-                st.title('Dream Destination Selector')
-
-                # Create a selectbox with trip names
-                trip_option = st.selectbox('Choose your dream destination!', trip_names)
-                trip_info = con.execute(f'select Description, Budget from Trip where TripName = {trip_option}').fetchall()
+                #trip_names = [row[0] for row in trip_data]
                 
-                if st.button("Plan My Trip"):
+                st.write("view info about the trips")
+                trip_table = cur.execute('select * from trip')
+                st.dataframe(trip_table)
+                st.write("displayed table")
+
+                st.write("view info about the destination")
+                dest_table = cur.execute('select * from destination')
+                st.dataframe(dest_table)
+                st.write("displayed table")
+
+                if st.button("Edit"):
                     st.success(
-                        f"Trip planned from {start_date} to {end_date}")
+                        f"changes made")
 
 
-                st.info("Explore our amazing features and make your trips memorable!")
+                st.info("Modify the trips according to your heart!")
 
                 st.markdown("---")
                 st.write("© 2023 Trip Planner App. All rights reserved.")
