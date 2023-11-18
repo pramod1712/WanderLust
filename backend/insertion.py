@@ -1,13 +1,7 @@
 import sqlite3
 
-con = sqlite3.connect('trip_plannerr1.db')
+con = sqlite3.connect('trip_planner2.db')
 cur = con.cursor()
-
-cur.execute("""CREATE TRIGGER fetch_urls AFTER INSERT 
-ON 
-BEGIN
- -- Trigger logic goes here....
-END;""")
 
 cur.execute("""
 INSERT INTO Trip (TripID, TripName, RecommendedStartMonth, RecommendedEndMonth, Description, Budget) VALUES

@@ -1,6 +1,6 @@
 import sqlite3
 
-con = sqlite3.connect('trip_plannerr1.db')
+con = sqlite3.connect('trip_planner2.db')
 cur = con.cursor()
 
 cur.execute('''
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS Trip (
   RecommendedStartMonth TEXT,
   RecommendedEndMonth TEXT,
   Description TEXT,
-  Budget NUMERIC(10,2)
+  Budget NUMERIC(10,2),
   ImageURL TEXT
 )
 ''')
@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS Destination (
   Country TEXT NOT NULL,
   City TEXT NOT NULL,
   Description TEXT,
+  ImageURL TEXT,
   foreign key (TripID) references Trip(TripID)
-  ImageURL TEXT 
 )
 ''')
 
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS Accomodation (
   Type TEXT NOT NULL,
   Location TEXT NOT NULL,
   Cost NUMERIC(10,2),
+  ImageURL TEXT,
   foreign key (TripID) references Trip(TripID)
-  ImageURL TEXT 
 )
 ''')
 
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS Recommendation (
   Type TEXT NOT NULL,
   Name TEXT NOT NULL,
   Description TEXT,
-  Rating NUMERIC(2,1)
+  Rating NUMERIC(2,1),
   ImageURL TEXT
 )
 ''')
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS Activity (
   Description TEXT,
   Date DATE NOT NULL,
   Time TIME NOT NULL,
-  Cost NUMERIC(10,2)
+  Cost NUMERIC(10,2),
   ImageURL TEXT
 )
 ''')
