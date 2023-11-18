@@ -33,6 +33,7 @@ try:
     cur = con.cursor()
     print("connected")
     # con = st.connection('trip_planner2', type='sql')
+    # con = st.connection('trip_planner2', type='sql')
 except:
     st.error("could not connect to database")
 
@@ -55,10 +56,16 @@ try:
     for index in range(len(emails)):
         credentials['usernames'][usernames[index]] = {
             'name': emails[index], 'password': passwords[index]}
+        credentials['usernames'][usernames[index]] = {
+            'name': emails[index], 'password': passwords[index]}
 
     Authenticator = stauth.Authenticate(
         credentials, cookie_name='TripPlannerAdmin', key='abcdef', cookie_expiry_days=1)
+    Authenticator = stauth.Authenticate(
+        credentials, cookie_name='TripPlannerAdmin', key='abcdef', cookie_expiry_days=1)
 
+    email, authentication_status, username = Authenticator.login(
+        ':orange[Login]', 'main')
     email, authentication_status, username = Authenticator.login(
         ':orange[Login]', 'main')
 
@@ -308,6 +315,37 @@ try:
                         trip_table = cur.execute('select * from Weather')
                         st.dataframe(trip_table)
                         st.write("displayed table")
+
+                def render_update():
+                    st.title("Page 3")
+                    st.write("This is Page 3.")
+                    st.write("Have a great time here!")
+
+
+                def render_delete():
+                    st.title("Page 4")
+                    st.write("Welcome to Page 4.")
+                    st.write("Explore and enjoy your stay!")
+
+
+                def main():
+                    st.sidebar.title("Navigation")
+                    
+                    selected_page = st.sidebar.radio("Select a Page", ["Home", "create", "read","update","delete"])
+                    if selected_page == "Home":
+                        render_home()
+                    elif selected_page == "create":
+                        render_create()
+                    elif selected_page == "read":
+                        render_read()
+                    elif selected_page == "update":
+                        render_update()
+                    elif selected_page == "delete":
+                        render_delete()
+                    
+
+                if __name__ == "__main__":
+                    main()
 
                 def render_update():
                     st.title("Page 3")
