@@ -1,3 +1,23 @@
+#not working
+"""
+                        description, budget = trip_info
+                        st.info(f"Description: {description}")
+                        st.info(f"Budget: {budget}")
+"""
+
+"""
+                        if trip_info:
+                            description, budget = trip_info
+                            st.info(f"Description: {description}")
+                            st.info(f"Budget: {budget}")
+                        else:
+                            st.info("No details found for the selected destination.")
+""" 
+
+
+
+#old codes
+
 """
 import sqlite3
 

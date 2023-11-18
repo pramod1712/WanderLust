@@ -1,7 +1,10 @@
 import streamlit as st
 import streamlit_authenticator as stauth
-from dependancies import sign_up, fetch_users
+from dependancies import sign_up, fetch_users, get_symbol
 import sqlite3
+
+#global variables
+currency_code = 'INR'
 
 try:
     con = sqlite3.connect('trip_planner2.db')
@@ -53,18 +56,29 @@ try:
                 end_date = st.date_input("Select the end date:")
 
                 # Fetch data from the 'trip' table
-                trip_data = con.execute('select TripName from trip').fetchall()
+                trip_data = con.execute('select TripName, Budget from trip').fetchall()
 
                 # Extract the TripName values from the result set
-                trip_names = [row[0] for row in trip_data]
+                trip_names = [' '.join((row[0], str(row[1]))) for row in trip_data]
+                #get_symbol(currency_code)+str(+row[1])
 
                 # Streamlit app
                 st.title('Dream Destination Selector')
 
                 # Create a selectbox with trip names
-                trip_option = st.selectbox('Choose your dream destination!', trip_names)
-                trip_info = con.execute(f'select Description, Budget from Trip where TripName = {trip_option}').fetchall()
+                trip_option = st.selectbox('Select your dream destination!', trip_names)
+                #st.info("displayed selectbox")
+
                 
+                if st.button("Display Details"):
+                    if trip_option:
+                        name_list = str(trip_option).split()[:-1]
+                        name_str = " ".join([str(item) for item in name_list])
+                        # Use proper string formatting or parameter binding to prevent SQL injection
+                        query = f"select Description from Trip where TripName = '{name_str}'"
+                        trip_info = con.execute(query).fetchone()
+                        st.info(trip_info)
+                                
                 if st.button("Plan My Trip"):
                     st.success(
                         f"Trip planned from {start_date} to {end_date}")
