@@ -1,3 +1,5 @@
+st-clickable-images
+serpapi
 SQLAlchemy==1.4.0
 mysql-connector-python
 streamlit_authenticator==0.2.2

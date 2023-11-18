@@ -14,6 +14,10 @@ db = deta.Base('StreamlitAuth')
 #admin_db = deta.Base('Admin_Creds')
 
 
+def get_symbol(currency_code):
+    if currency_code == 'INR':
+        return '₹ '
+
 def insert_user(email, username, password):
     """
     Inserts Users into the DB
