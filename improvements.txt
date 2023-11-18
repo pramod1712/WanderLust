@@ -1,3 +1,4 @@
+#remove github logo and fork option from top of app
 # add attribute in user table to store user's country - to adjust prices, currencies
 # provide google authentication
 # customise trip-budget according to location
