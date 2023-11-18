@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit_authenticator as stauth
 from dependancies import sign_up, fetch_users, get_symbol
 import sqlite3
+from st_clickable_images import clickable_images
 
 #global variables
 currency_code = 'INR'
@@ -54,6 +55,21 @@ try:
                 
                 start_date = st.date_input("Select the start date:")
                 end_date = st.date_input("Select the end date:")
+
+                clicked = clickable_images(
+                [
+                    "https://images.unsplash.com/photo-1565130838609-c3a86655db61?w=700",
+                    "https://wallpapers.com/images/hd/vibrant-mount-fuji-lake-5e9i6zkcn925n5zb.jpg",
+                    "https://images.unsplash.com/photo-1582550945154-66ea8fff25e1?w=700",
+                    "https://images.unsplash.com/photo-1591797442444-039f23ddcc14?w=700",
+                    "https://images.unsplash.com/photo-1518727818782-ed5341dbd476?w=700",
+                ],
+                titles=[f"Image #{str(i)}" for i in range(5)],
+                div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
+                img_style={"margin": "5px", "height": "200px"},
+)
+
+                st.markdown(f"Image #{clicked} clicked" if clicked > -1 else "No image clicked")
 
                 # Fetch data from the 'trip' table
                 trip_data = con.execute('select TripName, Budget from trip').fetchall()

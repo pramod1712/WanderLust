@@ -1,3 +1,4 @@
+# add attribute in user table to store user's country - to adjust prices, currencies
 # provide google authentication
 # customise trip-budget according to location
 # make transportation table realtime
