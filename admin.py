@@ -22,7 +22,8 @@ def add_transportation():
             # Insert the new transportation into the database
             cur.execute(
                 "INSERT INTO Transportation (TransportID, Mode, DepartureDatetime, ArrivalDatetime, DepartureLocation, ArrivalLocation, Cost) VALUES (?, ?, ?, ?, ?, ?, ?);",
-                (transport_id, mode, departure_datetime, arrival_datetime, departure_location, arrival_location, cost)
+                (transport_id, mode, departure_datetime, arrival_datetime,
+                 departure_location, arrival_location, cost)
             )
             con.commit()
             st.success("Transportation added successfully!")
@@ -74,75 +75,95 @@ try:
                 st.sidebar.subheader(f'Welcome Admin {username}')
                 Authenticator.logout('Log Out', 'sidebar')
 
-                # Your Streamlit code
-                formbtn = st.button("Add a New Trip")
+                def render_create():
+                    st.title("Page 1")
+                    st.write("This is Page 1.")
+                    st.write("Feel free to explore!")
+                    # Your Streamlit code
+                    formbtn = st.button("Add a New Trip")
 
-                if "formbtn_state" not in st.session_state:
-                    st.session_state.formbtn_state = False
+                    if "formbtn_state" not in st.session_state:
+                        st.session_state.formbtn_state = False
 
-                if formbtn or st.session_state.formbtn_state:
-                    st.session_state.formbtn_state = True
-                    
-                    st.subheader("Trip Information Form")
-                    
-                    with st.form(key='trip_info'):
-                        st.write('New Trip')
-                        
-                        trip_id = st.text_input(label="Trip ID")
-                        trip_name = st.text_input(label="Trip Name")
-                        start_month = st.text_input(label="Recommended Start Month")
-                        end_month = st.text_input(label="Recommended End Month")
-                        description = st.text_area(label="Description")
-                        budget = st.number_input(label="Budget", value=0.0)
-                        #image_url = st.text_input(label="Image URL")
-                        
-                        submit_form = st.form_submit_button(label="Register Trip")
-                        
-                        if submit_form:
-                            if trip_id and trip_name and start_month and end_month and description and budget:
-                                # Insert user information into the Trip table
-                                try:
-                                    cur.execute(
-                                        "INSERT INTO Trip (TripID, TripName, RecommendedStartMonth, RecommendedEndMonth, Description, Budget) VALUES (?, ?, ?, ?, ?, ?)",
-                                        (trip_id, trip_name, start_month, end_month, description, budget)
-                                    )
-                                    con.commit()
-                                    st.success(f"Trip registered successfully!")
-                                    trip_table = cur.execute('select * from trip')
-                                    st.dataframe(trip_table)
-                                except sqlite3.IntegrityError:
-                                    st.warning("TripID already exists, please use a different ID.")
-                            else:
-                                st.warning("Please fill all the fields in the form.")
+                    if formbtn or st.session_state.formbtn_state:
+                        st.session_state.formbtn_state = True
 
-                if (st.button("New Destination")):
-                    st.subheader("Add a New Destination")
-                    with st.form(key='add_destination_form'):
-                    # Collect destination details from the user
-                        trip_id = st.text_input("Trip ID")
-                        destination_id = st.text_input("Destination ID")  # Limit the length if needed
-                        name = st.text_input("Name")  # Adjust the maximum length accordingly
-                        country = st.text_input("Country")
-                        city = st.text_input("City")
-                        description = st.text_area("Description")
+                        st.subheader("Trip Information Form")
 
-                        # Check if all fields are filled
-                        if st.form_submit_button("Submit") and all([trip_id, destination_id, name, country, city]):
-                                    # Insert the new destination into the database
-                                    cur.execute(
-                                        "INSERT INTO Destination (TripID, DestinationID, Name, Country, City, Description) VALUES (?, ?, ?, ?, ?, ?);",
-                                        (trip_id, destination_id, name, country, city, description)
-                                    )
-                                    con.commit()
-                        
-                                    st.success("Destination added successfully!")
-                
-                if (st.button("New transportation")):
-                    add_transportation()
+                        with st.form(key='trip_info'):
+                            st.write('New Trip')
 
-                if (st.button("New accodimation")):
-                       
-                    st.subheader("Add New Accommodation")
+                            trip_id = st.text_input(label="Trip ID")
+                            trip_name = st.text_input(label="Trip Name")
+                            start_month = st.text_input(
+                                label="Recommended Start Month")
+                            end_month = st.text_input(
+                                label="Recommended End Month")
+                            description = st.text_area(label="Description")
+                            budget = st.number_input(label="Budget", value=0.0)
+                            # image_url = st.text_input(label="Image URL")
+
+                            submit_form = st.form_submit_button(
+                                label="Register Trip")
+
+                            if submit_form:
+                                if trip_id and trip_name and start_month and end_month and description and budget:
+                                    # Insert user information into the Trip table
+                                    try:
+                                        cur.execute(
+                                            "INSERT INTO Trip (TripID, TripName, RecommendedStartMonth, RecommendedEndMonth, Description, Budget) VALUES (?, ?, ?, ?, ?, ?)",
+                                            (trip_id, trip_name, start_month,
+                                            end_month, description, budget)
+                                        )
+                                        con.commit()
+                                        st.success(
+                                            f"Trip registered successfully!")
+                                    except sqlite3.IntegrityError:
+                                        st.warning(
+                                            "TripID already exists, please use a different ID.")
+                                else:
+                                    st.warning(
+                                        "Please fill all the fields in the form.")
+
+                    formbtn = st.button("Add a new dest")
+
+                    if "formbtn_state" not in st.session_state:
+                        st.session_state.formbtn_state = False
+
+                    if formbtn or st.session_state.formbtn_state:
+                        st.session_state.formbtn_state = True
+
+                        st.subheader("Add a New Destination")
+                        with st.form(key='add_destination_form'):
+                            # Collect destination details from the user
+                            trip_id = st.text_input("Trip ID")
+                            # Limit the length if needed
+                            destination_id = st.text_input("Destination ID")
+                            # Adjust the maximum length accordingly
+                            name = st.text_input("Name")
+                            country = st.text_input("Country")
+                            city = st.text_input("City")
+                            description = st.text_area("Description")
+
+                            # Check if all fields are filled
+                            if st.form_submit_button("Submit") and all([trip_id, destination_id, name, country, city]):
+                                # Insert the new destination into the database
+                                cur.execute(
+                                    "INSERT INTO Destination (TripID, DestinationID, Name, Country, City, Description) VALUES (?, ?, ?, ?, ?, ?);",
+                                    (trip_id, destination_id, name,
+                                    country, city, description)
+                                )
+                                con.commit()
+
+                                st.success(
+                                    f"Destination added successfully!")
+
+                    if (st.button("New transportation")):
+                        add_transportation()
+
+                    if (st.button("New accodimation")):
+
+                        st.subheader("Add New Accommodation")
 
                     # Create a form
                     with st.form(key='add_accommodation_form'):
@@ -154,59 +175,70 @@ try:
                         location = st.text_input("Location")
                         cost = st.number_input("Cost")
 
-                        # Check if all fields are filled
-                        if st.form_submit_button("Submit") and all([trip_id, accommodation_id, name, accommodation_type, location]):
-                            # Insert the new accommodation into the database
-                            cur.execute(
-                                "INSERT INTO Accommodation (TripID, AccommodationID, Name, Type, Location, Cost) VALUES (?, ?, ?, ?, ?, ?);",
-                                (trip_id, accommodation_id, name, accommodation_type, location, cost)
-                            )
-                            con.commit()
-                            st.success("Accommodation added successfully!")
+                        submit_form = st.form_submit_button(
+                                label="Register dest")
+
+                        if submit_form:
+                                if trip_id and accommodation_id and name and accommodation_type and location:
+                                # Insert the new accommodation into the database
+                                    cur.execute(
+                                        "INSERT INTO Accommodation (TripID, AccommodationID, Name, Type, Location, Cost) VALUES (?, ?, ?, ?, ?, ?);",
+                                        (trip_id, accommodation_id, name,
+                                        accommodation_type, location, cost)
+                                    )
+                                    con.commit()
+                                    st.success("Accommodation added successfully!")
 
                 if (st.button("New recommendation")):
                         st.subheader("Add New Recommendation")
 
-                                    # Create a form
+                        # Create a form
                         with st.form(key='add_recommendation_form'):
-                                        # Collect recommendation details from the user
-                            recommendation_id = st.text_input("Recommendation ID")
+                            # Collect recommendation details from the user
+                            recommendation_id = st.text_input(
+                                "Recommendation ID")
                             recommendation_type = st.text_input("Type")
                             name = st.text_input("Name")
                             description = st.text_area("Description")
                             rating = st.number_input("Rating")
 
-                                        # Check if all fields are filled
+                            # Check if all fields are filled
                             if st.form_submit_button("Submit") and all([recommendation_id, recommendation_type, name]):
-                                            # Insert the new recommendation into the database
-                                cur.execute("INSERT INTO Recommendation (RecommendationID, Type, Name, Description, Rating) VALUES (?, ?, ?, ?, ?);",(recommendation_id, recommendation_type, name, description, rating))
+                                # Insert the new recommendation into the database
+                                cur.execute("INSERT INTO Recommendation (RecommendationID, Type, Name, Description, Rating) VALUES (?, ?, ?, ?, ?);", (
+                                    recommendation_id, recommendation_type, name, description, rating))
                                 con.commit()
-                                st.success("Recommendation added successfully!")
+                                st.success(
+                                    "Recommendation added successfully!")
 
-                if(st.button("New activity")):
-                                st.subheader("Add New Activity")
+                if (st.button("New activity")):
+                        st.subheader("Add New Activity")
 
-                                    # Create a form
-                                with st.form(key='add_activity_form'):
-                                        # Collect activity details from the user
-                                        activity_id = st.text_input("Activity ID")
-                                        name = st.text_input("Name")
-                                        description = st.text_area("Description")
-                                        date = st.date_input("Date")
-                                        time = st.time_input("Time")
-                                        cost = st.number_input("Cost", value=0.0)
+                        # Create a form
+                        with st.form(key='add_activity_form'):
+                            # Collect activity details from the user
+                            activity_id = st.text_input("Activity ID")
+                            name = st.text_input("Name")
+                            description = st.text_area(
+                                "Description")
+                            date = st.date_input("Date")
+                            time = st.time_input("Time")
+                            cost = st.number_input(
+                                "Cost", value=0.0)
 
-                                        # Check if all fields are filled
-                                        if st.form_submit_button("Submit") and all([activity_id, name, date, time]):
-                                            # Insert the new activity into the database
-                                            cur.execute(
-                                                "INSERT INTO Activity (ActivityID, Name, Description, Date, Time, Cost) VALUES (?, ?, ?, ?, ?, ?);",
-                                                (activity_id, name, description, date, time, cost)
-                                            )
-                                            con.commit()
-                                            st.success("Activity added successfully!")
+                            # Check if all fields are filled
+                            if st.form_submit_button("Submit") and all([activity_id, name, date, time]):
+                                # Insert the new activity into the database
+                                cur.execute(
+                                    "INSERT INTO Activity (ActivityID, Name, Description, Date, Time, Cost) VALUES (?, ?, ?, ?, ?, ?);",
+                                    (activity_id, name,
+                                    description, date, time, cost)
+                                )
+                                con.commit()
+                                st.success(
+                                    "Activity added successfully!")
 
-                                            st.subheader("Add New Weather Details")
+                    
                 if(st.button("new weather")):
                             st.subheader("Add New weather")
                             # Create a form
@@ -217,61 +249,31 @@ try:
                                 temp = st.number_input("Temperature", value=0.0, step=0.1)
                                 conditions = st.text_input("Conditions")
 
-                                # Check if all fields are filled
-                                if st.form_submit_button("Submit") and all([weather_id, date, temp, conditions]):
-                                    # Insert the new weather details into the database
-                                    cur.execute(
-                                        "INSERT INTO Weather (WeatherID, Date, Temp, Conditions) VALUES (?, ?, ?, ?);",
-                                        (weather_id, date, temp, conditions)
-                                    )
-                                    con.commit()
-                                    st.success("Weather details added successfully!")
+                            # Check if all fields are filled
+                            if st.form_submit_button("Submit") and all([weather_id, date, temp, conditions]):
+                                # Insert the new weather details into the database
+                                cur.execute(
+                                    "INSERT INTO Weather (WeatherID, Date, Temp, Conditions) VALUES (?, ?, ?, ?);",
+                                    (weather_id, date, temp, conditions)
+                                )
+                                con.commit()
+                                st.success(
+                                    "Weather details added successfully!")
 
-                
-                
                 def render_home():
                     st.title("Home Page")
                     st.write("Welcome to the Home Page!")
                     st.write("Click on the sidebar to navigate to other pages.")
                     cur = con.cursor()
 
+                
                     
-                def render_create():
-                    st.title("Page 1")
-                    st.write("This is Page 1.")
-                    st.write("Feel free to explore!")
-                    if(st.button("New trip")):
-                        st.subheader("Add a New Trip")
 
-                        # Create a form
-                        with st.form(key='add_trip_form'):
-                            # Collect trip details from the user
-                            trip_id = st.text_input("Trip ID")
-                            trip_name = st.text_input("Trip Name")
-                            start_month = st.text_input("Recommended Start Month")
-                            end_month = st.text_input("Recommended End Month")
-                            description = st.text_area("Description")
-                            budget = st.number_input("Budget")
-
-                            # Check if all fields are filled
-                            
-                            
-                            if (st.form_submit_button("Submit")):
-                                # Insert the new trip into the database
-                                        cur.execute(
-                                    "INSERT INTO Trip (TripID, TripName, RecommendedStartMonth, RecommendedEndMonth, Description, Budget) VALUES (?, ?, ?, ?, ?, ?)",(trip_id, trip_name, start_month, end_month, description, budget))
-                                        con.commit()
-                                        st.success("Trip added successfully!")
-                        if(st.button("sun")):
-                                cur.execute(
-                                    "INSERT INTO Trip (TripID, TripName, RecommendedStartMonth, RecommendedEndMonth, Description, Budget) VALUES (?, ?, ?, ?, ?, ?)", (trip_id, trip_name, start_month, end_month, description, budget))
-
-                                con.commit()
                 def render_read():
                     st.title("Page 2")
                     st.write("You've reached Page 2.")
                     st.write("Navigate around and enjoy!")
-                    if(st.button("display trips")):
+                    if (st.button("display trips")):
                         st.write("view info about the trips")
                         trip_table = cur.execute('select * from trip')
                         st.dataframe(trip_table)
@@ -313,18 +315,51 @@ try:
                     st.title("Page 3")
                     st.write("This is Page 3.")
                     st.write("Have a great time here!")
+                    st.title("Update Trip Attribute in Database")
 
+                    # Display the existing trips in a clickable table
+                    trips_data = cur.execute('SELECT * FROM trip').fetchall()
+                    selected_trip_index = st.table(trips_data).selectbox("Select Trip to Update:", range(len(trips_data)))
 
+                    # Get the list of attribute names
+                    attribute_names = [description[0] for description in cur.description]
+
+                    # User selects an attribute to update
+                    selected_attribute = st.selectbox("Select Attribute to Update:", attribute_names)
+
+                    # Get the new value for the selected attribute
+                    new_value = st.text_input(f"New {selected_attribute}", value=trips_data[selected_trip_index][attribute_names.index(selected_attribute)])
+
+                    # Update button to apply the change
+                    if st.button("Update Attribute"):
+                        try:
+                            # Construct the SQL query to update the selected attribute for a single trip
+                            query = f"UPDATE trip SET {selected_attribute} = ? WHERE TripID = ?;"
+
+                            # Get the TripID of the selected trip
+                            trip_id = trips_data[selected_trip_index]['TripID']
+
+                            # Execute the SQL query
+                            cur.execute(query, (new_value, trip_id))
+
+                            # Commit the changes to the database
+                            con.commit()
+
+                            # Provide feedback to the user
+                            st.success(f"{selected_attribute} updated successfully!")
+                        except sqlite3.Error as e:
+                            # Handle SQL errors
+                            st.error(f"Error: {str(e)}")
                 def render_delete():
                     st.title("Page 4")
                     st.write("Welcome to Page 4.")
                     st.write("Explore and enjoy your stay!")
 
-
                 def main():
                     st.sidebar.title("Navigation")
-                    
-                    selected_page = st.sidebar.radio("Select a Page", ["Home", "create", "read","update","delete"])
+
+                    selected_page = st.sidebar.radio(
+                        "Select a Page", ["Home", "create", "read", "update", "delete"])
                     if selected_page == "Home":
                         render_home()
                     elif selected_page == "create":
@@ -335,11 +370,9 @@ try:
                         render_update()
                     elif selected_page == "delete":
                         render_delete()
-                    
 
                 if __name__ == "__main__":
                     main()
-
 
                     st.markdown("---")
                     st.write("© 2023 Trip Planner App. All rights reserved.")
