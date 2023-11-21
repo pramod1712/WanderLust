@@ -3,6 +3,17 @@ import streamlit_authenticator as stauth
 from dependancies import sign_up, fetch_users, get_symbol
 import sqlite3
 from st_clickable_images import clickable_images
+import re
+from html.parser import HTMLParser
+
+class NewlineSelectbox:
+    def __init__(self, label, options):
+        self.label = label
+        self.options = options
+
+    def render(self):
+        selected_index = st.selectbox(self.label, [option.replace('<br>', '\n') for option in self.options])
+        return self.options[selected_index]
 
 #global variables
 currency_code = 'INR'
@@ -50,51 +61,53 @@ try:
                 Authenticator.logout('Log Out', 'sidebar')
 
                 st.title("Trip Planner and Management System")
-
                 st.write("Plan and manage your trips with ease!")
                 
                 start_date = st.date_input("Select the start date:")
                 end_date = st.date_input("Select the end date:")
                 
-                clicked = clickable_images(
-                [
-                    "https://images.unsplash.com/photo-1565130838609-c3a86655db61?w=700",
-                    "https://images.unsplash.com/photo-1565372195458-9de0b320ef04?w=700",
-                    "https://images.unsplash.com/photo-1582550945154-66ea8fff25e1?w=700",
-                    "https://images.unsplash.com/photo-1591797442444-039f23ddcc14?w=700",
-                    "https://unsplash.com/photos/a-bunch-of-white-daisies-are-in-motion-OXl_Bm4Y-yU",
-                ],
-                titles=[f"Image #{str(i)}" for i in range(5)],
-                div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
-                img_style={"margin": "5px", "height": "200px"},
-)
-
-                st.markdown(f"Image #{clicked} clicked" if clicked > -1 else "No image clicked")
-
+                
                 # Fetch data from the 'trip' table
-                trip_data = con.execute('select TripName, Budget from trip').fetchall()
-
-                # Extract the TripName values from the result set
-                trip_names = [' '.join((row[0], str(row[1]))) for row in trip_data]
-                #get_symbol(currency_code)+str(+row[1])
-
+                select_trips = "SELECT TripName || '\n' || Description || '\n' || Budget FROM trip;"
+                trips_data = cur.execute(select_trips).fetchall()
+    
                 # Streamlit app
-                st.title('Dream Destination Selector')
+                st.title('Choose your Dream Trip!')
 
                 # Create a selectbox with trip names
-                trip_option = st.selectbox('Select your dream destination!', trip_names)
-                #st.info("displayed selectbox")
+                options = []
+                try:
+                    for row in trips_data:
+                        string_to_display = row[0]  # Replace 'column_index' with the actual column index
+                        formatted_string = re.sub('\n', '<br>', string_to_display)
+                        options.append(int(formatted_string))
+                except Exception as e:
+                    print(e)
 
+                # Render the selectbox
+                #st.info(options)
+                #trip_option = st.selectbox('Select a string:', options)
+                #trip_option = st.selectbox('Select your dream trip!', trips_data)
+                try:
+                    # Create an instance of the custom selectbox component
+                    newline_selectbox = NewlineSelectbox('Select a string:', options)
+
+                    # Render the custom selectbox component
+                    selected_string = newline_selectbox.render()
+                    st.write('Selected string:', selected_string)
+                except Exception as e:
+                    print(e)
+
+                    
                 
-                if st.button("Display Details"):
-                    if trip_option:
-                        name_list = str(trip_option).split()[:-1]
-                        name_str = " ".join([str(item) for item in name_list])
-                        # Use proper string formatting or parameter binding to prevent SQL injection
-                        query = f"select Description from Trip where TripName = '{name_str}'"
-                        trip_info = con.execute(query).fetchone()
-                        st.info(trip_info)
-                                
+                """if trip_option:
+                        st.title("Your destination options")
+                        select_dest = f"select Name, City, Description, Country,  from Destination where Destination.TripID = Trip.TripID"
+                """     
+                        
+                
+                
+                
                 if st.button("Plan My Trip"):
                     st.success(
                         f"Trip planned from {start_date} to {end_date}")

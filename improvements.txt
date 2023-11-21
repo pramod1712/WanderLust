@@ -1,3 +1,11 @@
+consider admins as travel agencies, 
+so let's say admin1 is a g tours. if they create a trip (with dest, accom, and everything) the user shd know from which agency they are choosing their package right.
+
+
+
+#add video reviews for each trip
+#add rating after trip is completed - testimonials
+#rating of activities - beach, restaurant from google maps - serpapi
 #remove github logo and fork option from top of app
 # add attribute in user table to store user's country - to adjust prices, currencies
 # provide google authentication

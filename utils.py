@@ -2,6 +2,7 @@ import inspect
 import textwrap
 
 import streamlit as st
+from st_clickable_images import clickable_images
 from serpapi import GoogleSearch
 
 
@@ -25,8 +26,6 @@ def get_country_code(country_name):
         return countries_info[country_name]
     else:
         return "Country code not found"
-
-
 
 def serpapi_get_google_images(api_key):
     image_results = set()  # Use a set to store unique URLs
@@ -67,3 +66,20 @@ for index, url in enumerate(image_urls, start=1):
     st.write(f"Image {index} URL: {url}")
 
 st.write(f"Total Unique Images: {len(image_urls)}")
+
+def get_images():
+    clicked = clickable_images(
+                [
+                    "https://images.unsplash.com/photo-1565130838609-c3a86655db61?w=700",
+                    "https://images.unsplash.com/photo-1565372195458-9de0b320ef04?w=700",
+                    "https://images.unsplash.com/photo-1582550945154-66ea8fff25e1?w=700",
+                    "https://images.unsplash.com/photo-1591797442444-039f23ddcc14?w=700",
+                    "https://unsplash.com/photos/a-bunch-of-white-daisies-are-in-motion-OXl_Bm4Y-yU",
+                ],
+                titles=[f"Image #{str(i)}" for i in range(5)],
+                div_style={"display": "flex", "justify-content": "center", "flex-wrap": "wrap"},
+                img_style={"margin": "5px", "height": "200px"},
+)
+
+    st.markdown(f"Image #{clicked} clicked" if clicked > -1 else "No image clicked")
+

@@ -9,10 +9,15 @@ sys.path.append(outer_dir)
 # Now import the module from the outer directory
 from utils import get_country_code
 
-con = sqlite3.connect('trip_plannerr1.db')
+con = sqlite3.connect('trip_planner2.db')
 cur = con.cursor()
 
 #cur.execute("select concat(Name, City, Country) as search_input1 from Destinations")
+'''
+cur.execute("delete from trips where TRIPID = 1 and TRIPID = 23")
+print("deleted")
+cur.commit()
+'''
 
 
 def get_next_tripid(country_name):
@@ -33,4 +38,4 @@ def get_next_tripid(country_name):
     else:
         return -1
     
-get_next_tripid('India')
+#get_next_tripid('India')
