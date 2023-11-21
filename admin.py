@@ -366,21 +366,18 @@ try:
                     st.title("Page 3")
                     st.write("This is Page 3.")
                     st.write("Have a great time here!")
-                    formbtn = st.button("update a New Trip")
-                    trip_id_to_edit = st.text_input("Enter Trip ID to Edit:")
-                    if "formbtn_state" not in st.session_state:
-                        st.session_state.formbtn_state = False
 
-                    if formbtn or st.session_state.formbtn_state:
-                        st.session_state.formbtn_state = True
+                    formbtn1 = st.button("update a Trip")
+                    
+                    if "formbtn1_state" not in st.session_state:
+                        st.session_state.formbtn1_state = False
 
-                
-                        
-
-                    # Streamlit app
+                    if formbtn1 or st.session_state.formbtn1_state:
+                        st.session_state.formbtn1_state = True
                     
                         st.title("Admin Panel")
-
+                        trip_id_to_edit = st.text_input(
+                            "Enter Trip ID to Edit:")
                         # Get the trip_id input from the admin
             
 
