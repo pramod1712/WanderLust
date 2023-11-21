@@ -9,7 +9,54 @@ def fetch_trip_data(trip_id):
     cur.execute("SELECT * FROM trip WHERE TripID = ?", (trip_id,))
     trip_data = cur.fetchone()
     return trip_data
-    
+
+
+def fetch_dest_data(dest_id):
+    # Fetch existing values for the specified trip_id from the 'trip' table
+    cur.execute("SELECT * FROM Destination WHERE DestinationID = ?", (dest_id,))
+    dest_data = cur.fetchone()
+    return dest_data
+
+
+def fetch_accmd_data(accmd_id):
+    # Fetch existing values for the specified trip_id from the 'trip' table
+    cur.execute(
+        "SELECT * FROM Accomodation WHERE AccomodationID = ?", (accmd_id,))
+    accmd_data = cur.fetchone()
+    return accmd_data
+
+
+def fetch_transport_data(trans_id):
+    # Fetch existing values for the specified trip_id from the 'trip' table
+    cur.execute(
+        "SELECT * FROM Transportation WHERE TransportID = ?", (trans_id,))
+    trans_data = cur.fetchone()
+    return trans_data
+
+
+def fetch_recommendation_data(rcmd_id):
+    # Fetch existing values for the specified trip_id from the 'trip' table
+    cur.execute(
+        "SELECT * FROM Recommendation WHERE RecommendationID = ?", (rcmd_id,))
+    rcmd_data = cur.fetchone()
+    return rcmd_data
+
+
+def fetch_activity_data(act_id):
+    # Fetch existing values for the specified trip_id from the 'trip' table
+    cur.execute(
+        "SELECT * FROM Activity WHERE ActivityID = ?", (act_id,))
+    act_data = cur.fetchone()
+    return act_data
+
+
+def fetch_weather_data(w_id):
+    # Fetch existing values for the specified trip_id from the 'trip' table
+    cur.execute(
+        "SELECT * FROM Weather WHERE WeatherID = ?", (w_id,))
+    wthr_data = cur.fetchone()
+    return wthr_data
+
 
 try:
     con = sqlite3.connect('trip_planner2.db')
@@ -264,9 +311,7 @@ try:
                             # Check if all fields are filled
                             if submit_form and activity_id and name and description and date and time and cost:
                                 # Insert the new activity into the database
-                                    st.write(activity_id)
-                                    st.write(name)
-                                    st.write(time)
+                                    
                                     insert_query = """
     INSERT INTO Activity (ActivityID, Name, Description, Date, Time, Cost)
     VALUES (?, ?, ?, ?, ?, ?)
@@ -367,12 +412,12 @@ try:
                     st.write("This is Page 3.")
                     st.write("Have a great time here!")
 
-                    formbtn1 = st.button("update a Trip")
+                    formbtn11 = st.button("update a Trip")
                     
-                    if "formbtn1_state" not in st.session_state:
-                        st.session_state.formbtn1_state = False
+                    if "formbtn11_state" not in st.session_state:
+                        st.session_state.formbtn11_state = False
 
-                    if formbtn1 or st.session_state.formbtn1_state:
+                    if formbtn11 or st.session_state.formbtn11_state:
                         st.session_state.formbtn1_state = True
                     
                         st.title("Admin Panel")
@@ -401,9 +446,228 @@ try:
                                         con.commit()
                                         st.success("Successfully updated!!")
 
+                    formbtn12 = st.button("update Destination")
+
+                    if "formbtn12_state" not in st.session_state:
+                        st.session_state.formbtn12_state = False
+
+                    if formbtn12 or st.session_state.formbtn12_state:
+                        st.session_state.formbtn12_state = True
+
+                        st.title("Admin Panel")
+                        dest_id_to_edit = st.text_input(
+                            "Enter Destination ID to Edit:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_dest_data(dest_id_to_edit)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='dest_UPDATE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Edit Destination Details:")
+                                new_destname = st.text_input(
+                                    "New Destination Name", value=existing_data[2])
+                                new_country = st.text_input(
+                                    "country", value=existing_data[3])
+                                new_city = st.text_input(
+                                    "New city", value=existing_data[4])
+                                new_description = st.text_area(
+                                    "New Description", value=existing_data[5])
                                 
-                                        
+                                if (st.form_submit_button(label="UPDATE Dest") and new_destname and new_description and new_city and new_country ):
+                                    cur.execute("UPDATE Destination SET Name=?, Country=?, City=?, Description=? WHERE DestinationID=?",
+                                                (new_destname, new_country, new_city, new_description, dest_id_to_edit))
+                                    con.commit()
+                                    st.success("Successfully updated!!")
+
+                    formbtn13 = st.button("update Accommodation")
+
+                    if "formbtn13_state" not in st.session_state:
+                        st.session_state.formbtn13_state = False
+
+                    if formbtn13 or st.session_state.formbtn13_state:
+                        st.session_state.formbtn13_state = True
+
+                        st.title("Admin Panel")
+                        accmd_id_to_edit = st.text_input(
+                            "Enter Accomodation ID to Edit:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_accmd_data(accmd_id_to_edit)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='dest_UPDATE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Edit Accommodation Details:")
+                                new_accmdname = st.text_input(
+                                    "Accomodation Name", value=existing_data[2])
+                                new_type = st.text_input(
+                                    "type", value=existing_data[3])
+                                new_location = st.text_input(
+                                    "Location", value=existing_data[4])
+                                new_cost = st.text_input(
+                                    "cost", value=existing_data[5])
+
+                                if (st.form_submit_button(label="UPDATE Accmd") and new_accmdname and new_type and new_location and new_cost):
+                                    cur.execute("UPDATE Accomodation SET Name=?, Type=? ,Location=?, Cost=? WHERE AccomodationID=?",
+                                                (new_accmdname, new_type, new_location, new_cost, accmd_id_to_edit))
+                                    con.commit()
+                                    st.success("Successfully updated!!")
+
+
+                    formbtn14 = st.button("update Transportation")
+
+                    if "formbtn14_state" not in st.session_state:
+                        st.session_state.formbtn14_state = False
+
+                    if formbtn14 or st.session_state.formbtn14_state:
+                        st.session_state.formbtn14_state = True
+
+                        st.title("Admin Panel")
+                        transport_id_to_edit = st.text_input(
+                            "Enter Transport ID to Edit:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_transport_data(transport_id_to_edit)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='Transport_UPDATE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Edit Transport Details:")
+                                new_mode = st.text_input("mode", value=existing_data[1])
+                                new_ddt = st.text_input("Departure Date time", value=existing_data[2])
+                                new_adt = st.text_input("Arrival Date time", value=existing_data[3])
+                                new_dl = st.text_input("Departure Location", value=existing_data[4])
+                                new_al = st.text_input("Arrival Location", value=existing_data[5])
+                                new_cost = st.text_input("Cost",value=existing_data[6])
+                                if (st.form_submit_button(label="UPDATE Transport") and new_mode and new_ddt and new_adt and new_dl and new_al and new_cost):
+                                    cur.execute("UPDATE Transportation SET Mode=?, DepartureDatetime=? ,ArrivalDatetime=?, DepartureLocation=?, ArrivalLocation=?, Cost=? WHERE TransportID=?",
+                                                (new_mode, new_ddt, new_adt, new_dl,new_al,new_cost, transport_id_to_edit))
+                                    con.commit()
+                                    st.success("Successfully updated!!")
+                    
+                    formbtn15 = st.button("update Recommendation")
+
+                    if "formbtn15_state" not in st.session_state:
+                        st.session_state.formbtn15_state = False
+
+                    if formbtn15 or st.session_state.formbtn15_state:
+                        st.session_state.formbtn15_state = True
+
+                        st.title("Admin Panel")
+                        rcmd_id_to_edit = st.text_input(
+                            "Enter Recommendation ID to Edit:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_recommendation_data(
+                            rcmd_id_to_edit)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='Recommendation_UPDATE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Edit Recommendation Details:")
+                                new_type = st.text_input(
+                                    "Type", value=existing_data[1])
+                                new_name = st.text_input(
+                                    "Name", value=existing_data[2])
+                                new_desc = st.text_area(
+                                    "Description", value=existing_data[3])
+                                new_rtng = st.text_input(
+                                    "Rating", value=existing_data[4])
+                                
+                                if (st.form_submit_button(label="UPDATE Recommendation") and new_type and new_name and new_desc and new_rtng ):
+                                    cur.execute("UPDATE Recommendation SET Type=?, Name=? ,Description=?, Rating=? WHERE RecommendationID=?",
+                                                (new_type, new_name, new_desc, new_rtng, rcmd_id_to_edit))
+                                    con.commit()
+                                    st.success("Successfully updated!!")
+
+                    formbtn16 = st.button("update Activity")
+
+                    if "formbtn16_state" not in st.session_state:
+                        st.session_state.formbtn16_state = False
+
+                    if formbtn16 or st.session_state.formbtn16_state:
+                        st.session_state.formbtn16_state = True
+
+                        st.title("Admin Panel")
+                        act_id_to_edit = st.text_input(
+                            "Enter Activity ID to Edit:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_activity_data(
+                            act_id_to_edit)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='Activity_UPDATE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Edit Activity Details:")
+                                new_name = st.text_input(
+                                    "name", value=existing_data[1])
+                                new_desc = st.text_area(
+                                    "Description", value=existing_data[2])
+                                new_date = st.text_input(
+                                    "Date", value=existing_data[3])
+                                new_time = st.text_input(
+                                    "Time", value=existing_data[4])
+                                new_cost = st.text_input(
+                                    "Cost", value=existing_data[5])
+
+
+                                if (st.form_submit_button(label="UPDATE Activity") and new_date and new_name and new_desc and new_time and new_cost):
                                     
+                                    cur.execute("UPDATE Activity SET Name=? ,Description=?, Date=?,Time=?,Cost=? WHERE ActivityID=?",
+                                                (new_name, new_desc, new_date,str(new_time),new_cost, act_id_to_edit))
+                                    con.commit()
+                                    st.success("Successfully updated!!")
+                    
+                    formbtn17 = st.button("update Weather")
+
+                    if "formbtn17_state" not in st.session_state:
+                        st.session_state.formbtn17_state = False
+
+                    if formbtn17 or st.session_state.formbtn17_state:
+                        st.session_state.formbtn17_state = True
+
+                        st.title("Admin Panel")
+                        wthr_id_to_edit = st.text_input(
+                            "Enter Weather ID to Edit:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_weather_data(
+                            wthr_id_to_edit)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='Weather_UPDATE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.header("Edit Weather Details:")
+                                
+                                new_date = st.text_input(
+                                    "Date", value=existing_data[1])
+                                new_temp = st.text_input(
+                                    "Temparture", value=existing_data[2])
+                                new_cond = st.text_area(
+                                    "Conditions", value=existing_data[3])
+
+                                if (st.form_submit_button(label="UPDATE Weather") and new_date and new_temp and new_cond):
+                                   
+                                    cur.execute("UPDATE Weather SET Date=? ,Temp=?, Conditions=? WHERE WeatherID=?",
+                                                (new_date, new_temp, new_cond ,wthr_id_to_edit))
+                                    con.commit()
+                                    st.success("Successfully updated!!")
+
+
                 def render_delete():
                     st.title("Page 4")
                     st.write("Welcome to Page 4.")
