@@ -257,12 +257,22 @@ try:
                             cost = st.number_input("Cost")
                             submit_form = st.form_submit_button("Submit")
                             # Check if all fields are filled
-                            if submit_form: 
-                                
-                                if activity_id and name and description and date and time and cost:
+                            if submit_form and activity_id and name and description and date and time and cost:
                                 # Insert the new activity into the database
-                                    cur.execute(
-                                        "insert into Activity (ActivityID,Name,Description,Date,Time,Cost) values (?,?,?,?,?,?)",(activity_id,name,description,date,time,cost))
+                                    st.write(activity_id)
+                                    st.write(name)
+                                    st.write(time)
+                                    insert_query = """
+    INSERT INTO Activity (ActivityID, Name, Description, Date, Time, Cost)
+    VALUES (?, ?, ?, ?, ?, ?)
+"""
+
+# Replace the following values with the actual data you want to insert
+                                    data_to_insert = (activity_id, name, description,date, str(time), cost)
+
+# Execute the query
+                                    cur.execute(insert_query, data_to_insert)
+                                    
                                     
                                     con.commit()
                                     st.success("Activity added successfully!")
