@@ -4,6 +4,11 @@ from dependancies_admin import sign_up, fetch_users
 import sqlite3
 
 
+def fetch_trip_data(trip_id):
+    # Fetch existing values for the specified trip_id from the 'trip' table
+    cur.execute("SELECT * FROM trip WHERE TripID = ?", (trip_id,))
+    trip_data = cur.fetchone()
+    return trip_data
     
 
 try:
@@ -362,48 +367,46 @@ try:
                     st.write("This is Page 3.")
                     st.write("Have a great time here!")
                     formbtn = st.button("update a New Trip")
-
+                    trip_id_to_edit = st.text_input("Enter Trip ID to Edit:")
                     if "formbtn_state" not in st.session_state:
                         st.session_state.formbtn_state = False
 
                     if formbtn or st.session_state.formbtn_state:
                         st.session_state.formbtn_state = True
 
-                        st.subheader("Trip Information Form")
+                
+                        
 
-                        with st.form(key='trip_info'):
-                            st.write('New Trip')
+                    # Streamlit app
+                    
+                        st.title("Admin Panel")
 
-                            #trip_id = st.text_input(label="Trip ID")
-                            trip_name = st.text_input(label="Trip Name")
-                            start_month = st.text_input(
-                                label="Recommended Start Month")
-                            end_month = st.text_input(
-                                label="Recommended End Month")
-                            description = st.text_area(label="Description")
-                            budget = st.number_input(label="Budget", value=0.0)
-                            # image_url = st.text_input(label="Image URL")
+                        # Get the trip_id input from the admin
+            
 
-                            submit_form = st.form_submit_button(
-                                label="Register Trip")
+                    
+                            # Fetch existing data for the specified trip_id
+                        existing_data = fetch_trip_data(trip_id_to_edit)
 
-                            if submit_form:
-                                if trip_name and start_month and end_month and description and budget:
-                                    # Insert user information into the Trip table
+                        if existing_data:
+                                # Display the existing dat
+                                with st.form(key='trip_UPDATE'):
+                                # Display a form with input fields pre-filled with existing values
+                                    st.subheader("Edit Trip Details:")
+                                    new_trip_name = st.text_input("New Trip Name", value=existing_data[1])
+                                    new_start_month = st.text_input("New Start Month", value=existing_data[2])
+                                    new_end_month = st.text_input("New End Month", value=existing_data[3])
+                                    new_description = st.text_area("New Description", value=existing_data[4])
+                                    new_budget = st.number_input("New Budget", value=existing_data[5])
+                                    if(st.form_submit_button(label="UPDATE Trip") and new_budget and new_description and new_end_month and new_start_month and new_trip_name):
+                                        cur.execute("UPDATE trip SET TripName=?, RecommendedStartMonth=?, RecommendedEndMonth=?, Description=?, Budget=? WHERE TripID=?",
+                                                    (new_trip_name, new_start_month, new_end_month, new_description, new_budget, trip_id_to_edit))
+                                        con.commit()
+                                        st.success("Successfully updated!!")
+
+                                
+                                        
                                     
-                                    
-                                    cur.execute(
-    "UPDATE Trip SET TripName = ?, RecommendedStartMonth = ?, RecommendedEndMonth = ?, Description = ?, Budget = ? WHERE TripID = 1",
-    (trip_name, start_month, end_month, description, budget)
-)
-                                    con.commit()
-
-                                    st.success(
-                                            f"Trip registered successfully!")
-                                    
-                                else:
-                                    st.warning(
-                                        "Please fill all the fields in the form.")
                 def render_delete():
                     st.title("Page 4")
                     st.write("Welcome to Page 4.")
