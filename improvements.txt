@@ -14,3 +14,12 @@ after the below stmt
  st.info("No details found for the selected destination.")
  add an option to request admin to add details
 '''
+"""
+admin part 
+update and del
+id's dropdown select 
+
+data type dropdown
+table name
+column name
+"""

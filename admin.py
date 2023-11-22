@@ -2,7 +2,11 @@ import streamlit as st
 import streamlit_authenticator as stauth
 from dependancies_admin import sign_up, fetch_users
 import sqlite3
+import pandas as pd
 
+    
+
+    
 
 def fetch_trip_data(trip_id):
     # Fetch existing values for the specified trip_id from the 'trip' table
@@ -66,9 +70,10 @@ try:
 except:
     st.error("could not connect to database")
 
-st.set_page_config(page_title='WanderLust Admin',
-                   page_icon='🦸‍♂️', initial_sidebar_state='expanded')
-st.title("WanderLust Admin Panel")
+st.set_page_config(page_title='Trip Planner -PES',
+                   page_icon='🦸‍♂️', initial_sidebar_state='collapsed'
+                   )
+st.title("Trip Planner -PES Admin Panel")
 
 try:
     users = fetch_users()
@@ -104,10 +109,52 @@ try:
                 st.sidebar.subheader(f'Welcome Admin {username}')
                 Authenticator.logout('Log Out', 'sidebar')
 
+
+                def render_home():
+                    st.title("Home Page")
+                    st.write("Welcome to the Home Page!")
+                    st.write("Click on the sidebar to navigate to other pages.")
+                    st.markdown("---")
+                    cur.execute("SELECT COUNT(*) FROM trip")
+                    count = cur.fetchone()[0]
+                    st.success(f"Total number of trips we are offering are {count}")
+
+                    cur.execute("SELECT COUNT(*) FROM Destination")
+                    count = cur.fetchone()[0]
+                    st.error(
+                        f"Total number of Destinations we are in {count}")
+                    
+                    cur.execute("SELECT COUNT(*) FROM Accomodation")
+                    count = cur.fetchone()[0]
+                    st.success(
+                        f"Total number of Accomodation privileges we are having {count}")
+                    
+                    cur.execute("SELECT COUNT(*) FROM Transportation")
+                    count = cur.fetchone()[0]
+                    st.error(
+                        f"Total number of transport ways we are having {count}")
+                    
+                    cur.execute("SELECT COUNT(*) FROM Recommendation")
+                    count = cur.fetchone()[0]
+                    st.success(
+                        f"Total number of Recommendation packages we are having {count}")
+
+                    cur.execute("SELECT COUNT(*) FROM Activity")
+                    count = cur.fetchone()[0]
+                    st.error(
+                        f"Total number of Activities we are having {count}")
+                    
+                    cur.execute("SELECT COUNT(*) FROM Transportation")
+                    count = cur.fetchone()[0]
+                    st.success(
+                        f"Total information about weather in {count} different places")
+
+                    
+
                 def render_create():
-                    st.title("Page 1")
-                    st.write("This is Page 1.")
-                    st.write("Feel free to explore!")
+                    st.title("Insert or create into DB from this page")
+                    st.write("Click on the sidebar to navigate to other pages.")
+                    
                     # Your Streamlit code
                     formbtn1 = st.button("Add a New Trip")
 
@@ -153,7 +200,7 @@ try:
                                 else:
                                     st.warning(
                                         "Please fill all the fields in the form.")
-
+                    st.markdown("---")
                     formbtn2 = st.button("Add a new dest")
 
                     if "formbtn2_state" not in st.session_state:
@@ -186,7 +233,7 @@ try:
 
                                 st.success(
                                     f"Destination added successfully!")
-
+                    st.markdown("---")
                     formbtn3 = st.button("Transportation")
 
                     if "formbtn3_state" not in st.session_state:
@@ -222,7 +269,7 @@ try:
                                     )
                                     con.commit()
                                     st.success("Transportation added successfully!")
-
+                    st.markdown("---")
                     formbtn4 = st.button("Add a new Accomodation")
 
                     if "formbtn4_state" not in st.session_state:
@@ -257,7 +304,7 @@ try:
                                 )
                                 con.commit()
                                 st.success("Accomodation added successfully!")
-
+                    st.markdown("---")
                     formbtn5 = st.button("Recommendation")
 
                     if "formbtn5_state" not in st.session_state:
@@ -287,7 +334,7 @@ try:
                                 con.commit()
                                 st.success(
                                     "Recommendation added successfully!")
-
+                    st.markdown("---")
                     formbtn6 = st.button("Activity")
 
                     if "formbtn6_state" not in st.session_state:
@@ -327,7 +374,7 @@ try:
                                     con.commit()
                                     st.success("Activity added successfully!")
                         
-                        
+                    st.markdown("---")
                     formbtn7 = st.button("Weather")
 
                     if "formbtn7_state" not in st.session_state:
@@ -356,61 +403,86 @@ try:
                                 st.success(
                                     "Weather details added successfully!")
 
-                def render_home():
-                    st.title("Home Page")
-                    st.write("Welcome to the Home Page!")
-                    st.write("Click on the sidebar to navigate to other pages.")
-                    cur = con.cursor()
+                
 
                 
                     
 
                 def render_read():
-                    st.title("Page 2")
-                    st.write("You've reached Page 2.")
-                    st.write("Navigate around and enjoy!")
+                    st.title("To view values")
+                    st.write("Click on the sidebar to navigate to other pages.")
+                    
+
                     if (st.button("display trips")):
                         st.write("view info about the trips")
-                        trip_table = cur.execute('select * from trip')
-                        st.dataframe(trip_table)
+                        trip_data = cur.execute('SELECT * FROM trip').fetchall()
+                        column_names = [description[0] for description in cur.description]
+                        df_trip = pd.DataFrame(trip_data, columns=column_names)
+                        st.dataframe(df_trip)
+                        
+                    st.markdown("---")
 
                     if (st.button("display destinations")):
                         st.write("view info about the destinations")
-                        trip_table = cur.execute('select * from Destination')
-                        st.dataframe(trip_table)
+                        trip_data = cur.execute('SELECT * FROM Destination').fetchall()
+                        column_names = [description[0] for description in cur.description]
+                        df_trip = pd.DataFrame(trip_data, columns=column_names)
+                        st.dataframe(df_trip)
 
+                    st.markdown("---")
                     if (st.button("display Accomodations")):
                         st.write("view info about the Accomodations")
-                        trip_table = cur.execute('select * from Accomodation')
-                        st.dataframe(trip_table)
-                        st.write("displayed table")
+                        trip_data = cur.execute(
+                            'SELECT * FROM Accomodation').fetchall()
+                        column_names = [description[0]
+                                        for description in cur.description]
+                        df_trip = pd.DataFrame(trip_data, columns=column_names)
+                        st.dataframe(df_trip)
+
+                    st.markdown("---")
                     if (st.button("display Transportation")):
                         st.write("view info about the Transportation")
-                        trip_table = cur.execute(
-                            'select * from Transportation')
-                        st.dataframe(trip_table)
-                        st.write("displayed table")
+                        trip_data = cur.execute(
+                            'SELECT * FROM Transportation').fetchall()
+                        column_names = [description[0]
+                                        for description in cur.description]
+                        df_trip = pd.DataFrame(trip_data, columns=column_names)
+                        st.dataframe(df_trip)
+                    st.markdown("---")
+
                     if (st.button("display Recommendation")):
                         st.write("view info about the Recommendation")
-                        trip_table = cur.execute(
-                            'select * from Recommendation')
-                        st.dataframe(trip_table)
-                        st.write("displayed table")
+                        trip_data = cur.execute(
+                            'SELECT * FROM Recommendation').fetchall()
+                        column_names = [description[0]
+                                        for description in cur.description]
+                        df_trip = pd.DataFrame(trip_data, columns=column_names)
+                        st.dataframe(df_trip)
+                    st.markdown("---")
                     if (st.button("display Activity")):
                         st.write("view info about the Activity")
-                        trip_table = cur.execute('select * from Activity')
-                        st.dataframe(trip_table)
-                        st.write("displayed table")
+                        trip_data = cur.execute(
+                            'SELECT * FROM Activity').fetchall()
+                        column_names = [description[0]
+                                        for description in cur.description]
+                        df_trip = pd.DataFrame(trip_data, columns=column_names)
+                        st.dataframe(df_trip)
+                    st.markdown("---")
                     if (st.button("display Weather")):
                         st.write("view info about the Weather")
-                        trip_table = cur.execute('select * from Weather')
-                        st.dataframe(trip_table)
-                        st.write("displayed table")
+                        
+                        trip_data = cur.execute(
+                            'SELECT * FROM Weather').fetchall()
+                        column_names = [description[0]
+                                        for description in cur.description]
+                        df_trip = pd.DataFrame(trip_data, columns=column_names)
+                        st.dataframe(df_trip)
+
+                    
 
                 def render_update():
-                    st.title("Page 3")
-                    st.write("This is Page 3.")
-                    st.write("Have a great time here!")
+                    st.title("To update values in DB")
+                    st.write("Click on the sidebar to navigate to other pages.")
 
                     formbtn11 = st.button("update a Trip")
                     
@@ -420,16 +492,16 @@ try:
                     if formbtn11 or st.session_state.formbtn11_state:
                         st.session_state.formbtn11_state = True
                     
-                        st.title("Admin Panel")
-                        trip_id_to_edit = st.text_input(
-                            "Enter Trip ID to Edit:")
-                        # Get the trip_id input from the admin
-            
+                        cur.execute("SELECT TripID FROM trip")
+                        trip_ids = [row[0] for row in cur.fetchall()]
+                        trip_id_to_edit = st.selectbox(
+                            "Select a TripID", trip_ids)
+                        
 
                     
                             # Fetch existing data for the specified trip_id
                         existing_data = fetch_trip_data(trip_id_to_edit)
-
+                        
                         if existing_data:
                                 # Display the existing dat
                                 with st.form(key='trip_UPDATE'):
@@ -440,12 +512,13 @@ try:
                                     new_end_month = st.text_input("New End Month", value=existing_data[3])
                                     new_description = st.text_area("New Description", value=existing_data[4])
                                     new_budget = st.number_input("New Budget", value=existing_data[5])
+                                    
                                     if(st.form_submit_button(label="UPDATE Trip") and new_budget and new_description and new_end_month and new_start_month and new_trip_name):
                                         cur.execute("UPDATE trip SET TripName=?, RecommendedStartMonth=?, RecommendedEndMonth=?, Description=?, Budget=? WHERE TripID=?",
                                                     (new_trip_name, new_start_month, new_end_month, new_description, new_budget, trip_id_to_edit))
                                         con.commit()
                                         st.success("Successfully updated!!")
-
+                    st.markdown("---")
                     formbtn12 = st.button("update Destination")
 
                     if "formbtn12_state" not in st.session_state:
@@ -454,9 +527,11 @@ try:
                     if formbtn12 or st.session_state.formbtn12_state:
                         st.session_state.formbtn12_state = True
 
-                        st.title("Admin Panel")
-                        dest_id_to_edit = st.text_input(
-                            "Enter Destination ID to Edit:")
+                        cur.execute("SELECT DestinationID FROM Destination")
+                        dest_ids = [row[0] for row in cur.fetchall()]
+                        dest_id_to_edit = st.selectbox(
+                            "Select a DestinationID", dest_ids)
+                        
                         # Get the trip_id input from the admin
 
                         # Fetch existing data for the specified trip_id
@@ -481,7 +556,7 @@ try:
                                                 (new_destname, new_country, new_city, new_description, dest_id_to_edit))
                                     con.commit()
                                     st.success("Successfully updated!!")
-
+                    st.markdown("---")
                     formbtn13 = st.button("update Accommodation")
 
                     if "formbtn13_state" not in st.session_state:
@@ -490,9 +565,11 @@ try:
                     if formbtn13 or st.session_state.formbtn13_state:
                         st.session_state.formbtn13_state = True
 
-                        st.title("Admin Panel")
-                        accmd_id_to_edit = st.text_input(
-                            "Enter Accomodation ID to Edit:")
+                        cur.execute("SELECT AccomodationID FROM Accomodation")
+                        acmd_ids = [row[0] for row in cur.fetchall()]
+                        accmd_id_to_edit = st.selectbox(
+                            "Select a AccommodationID", acmd_ids)
+                        
                         # Get the trip_id input from the admin
 
                         # Fetch existing data for the specified trip_id
@@ -518,6 +595,7 @@ try:
                                     con.commit()
                                     st.success("Successfully updated!!")
 
+                    st.markdown("---")
 
                     formbtn14 = st.button("update Transportation")
 
@@ -527,10 +605,10 @@ try:
                     if formbtn14 or st.session_state.formbtn14_state:
                         st.session_state.formbtn14_state = True
 
-                        st.title("Admin Panel")
-                        transport_id_to_edit = st.text_input(
-                            "Enter Transport ID to Edit:")
-                        # Get the trip_id input from the admin
+                        cur.execute("SELECT TransportID FROM Transportation")
+                        transp_ids = [row[0] for row in cur.fetchall()]
+                        transport_id_to_edit = st.selectbox(
+                            "Select a TransportID", transp_ids)
 
                         # Fetch existing data for the specified trip_id
                         existing_data = fetch_transport_data(transport_id_to_edit)
@@ -552,6 +630,7 @@ try:
                                     con.commit()
                                     st.success("Successfully updated!!")
                     
+                    st.markdown("---")
                     formbtn15 = st.button("update Recommendation")
 
                     if "formbtn15_state" not in st.session_state:
@@ -560,9 +639,11 @@ try:
                     if formbtn15 or st.session_state.formbtn15_state:
                         st.session_state.formbtn15_state = True
 
-                        st.title("Admin Panel")
-                        rcmd_id_to_edit = st.text_input(
-                            "Enter Recommendation ID to Edit:")
+                        cur.execute(
+                            "SELECT RecommendationID FROM Recommendation")
+                        rcmd_ids = [row[0] for row in cur.fetchall()]
+                        rcmd_id_to_edit = st.selectbox(
+                            "Select a RecommendationID", rcmd_ids)
                         # Get the trip_id input from the admin
 
                         # Fetch existing data for the specified trip_id
@@ -588,7 +669,8 @@ try:
                                                 (new_type, new_name, new_desc, new_rtng, rcmd_id_to_edit))
                                     con.commit()
                                     st.success("Successfully updated!!")
-
+                    
+                    st.markdown("---")
                     formbtn16 = st.button("update Activity")
 
                     if "formbtn16_state" not in st.session_state:
@@ -597,11 +679,10 @@ try:
                     if formbtn16 or st.session_state.formbtn16_state:
                         st.session_state.formbtn16_state = True
 
-                        st.title("Admin Panel")
-                        act_id_to_edit = st.text_input(
-                            "Enter Activity ID to Edit:")
-                        # Get the trip_id input from the admin
-
+                        cur.execute("SELECT ActivityID FROM Activity")
+                        act_ids = [row[0] for row in cur.fetchall()]
+                        act_id_to_edit = st.selectbox(
+                            "Select a ActivityID", act_ids)
                         # Fetch existing data for the specified trip_id
                         existing_data = fetch_activity_data(
                             act_id_to_edit)
@@ -630,6 +711,7 @@ try:
                                     con.commit()
                                     st.success("Successfully updated!!")
                     
+                    st.markdown("---")
                     formbtn17 = st.button("update Weather")
 
                     if "formbtn17_state" not in st.session_state:
@@ -638,10 +720,10 @@ try:
                     if formbtn17 or st.session_state.formbtn17_state:
                         st.session_state.formbtn17_state = True
 
-                        st.title("Admin Panel")
-                        wthr_id_to_edit = st.text_input(
-                            "Enter Weather ID to Edit:")
-                        # Get the trip_id input from the admin
+                        cur.execute("SELECT WeatherID FROM Weather")
+                        whtr_ids = [row[0] for row in cur.fetchall()]
+                        wthr_id_to_edit = st.selectbox(
+                            "Select a WeatherID", whtr_ids)
 
                         # Fetch existing data for the specified trip_id
                         existing_data = fetch_weather_data(
@@ -669,7 +751,7 @@ try:
 
 
                 def render_delete():
-                    st.title("Page 4")
+                    st.title("To delete values from DB")
                     st.write("Welcome to Page 4.")
                     st.write("Explore and enjoy your stay!")
                     
@@ -682,10 +764,10 @@ try:
                     if formbtn21 or st.session_state.formbtn21_state:
                         st.session_state.formbtn21_state = True
 
-                        st.title("Admin Panel")
-                        trip_id_to_del = st.text_input(
-                            "Enter Trip ID to del:")
-                        # Get the trip_id input from the admin
+                        cur.execute("SELECT TripID FROM trip")
+                        trip_ids = [row[0] for row in cur.fetchall()]
+                        trip_id_to_del = st.selectbox(
+                            "Select a TripID", trip_ids)
 
                         # Fetch existing data for the specified trip_id
                         existing_data = fetch_trip_data(trip_id_to_del)
@@ -712,7 +794,7 @@ try:
                                     
                                     st.success(f"Trip with ID {trip_id_to_del} deleted successfully!")
                     
-                    
+                    st.markdown("---")
                     formbtn22 = st.button("Delete Destination")
 
                     if "formbtn22_state" not in st.session_state:
@@ -721,10 +803,10 @@ try:
                     if formbtn22 or st.session_state.formbtn22_state:
                         st.session_state.formbtn22_state = True
 
-                        st.title("Admin Panel")
-                        dest_id_to_del = st.text_input(
-                            "Enter Destination ID to Delete:")
-                        # Get the trip_id input from the admin
+                        cur.execute("SELECT DestinationID FROM Destination")
+                        dest_ids = [row[0] for row in cur.fetchall()]
+                        dest_id_to_del = st.selectbox(
+                            "Select a DestinationID", dest_ids)
 
                         # Fetch existing data for the specified trip_id
                         existing_data = fetch_dest_data(dest_id_to_del)
@@ -750,7 +832,7 @@ try:
                                     con.commit()
                                     st.success(
                                         f"Destination with ID {dest_id_to_del} deleted successfully!")
-
+                    st.markdown("---")
                     formbtn23 = st.button("DELETE Accommodation")
 
                     if "formbtn23_state" not in st.session_state:
@@ -759,10 +841,10 @@ try:
                     if formbtn23 or st.session_state.formbtn23_state:
                         st.session_state.formbtn23_state = True
 
-                        st.title("Admin Panel")
-                        accmd_id_to_del = st.text_input(
-                            "Enter Accomodation ID to DEL:")
-                        # Get the trip_id input from the admin
+                        cur.execute("SELECT AccomodationID FROM Accomodation")
+                        acmd_ids = [row[0] for row in cur.fetchall()]
+                        accmd_id_to_del = st.selectbox(
+                            "Select a AccommodationID", acmd_ids)
 
                         # Fetch existing data for the specified trip_id
                         existing_data = fetch_accmd_data(accmd_id_to_del)
@@ -788,7 +870,7 @@ try:
                                     con.commit()
                                     st.success(
                                         f"Destination with ID {accmd_id_to_del} deleted successfully!")
-                    
+                    st.markdown("---")
                     formbtn24 = st.button("Del a Transportation")
 
                     if "formbtn24_state" not in st.session_state:
@@ -797,10 +879,10 @@ try:
                     if formbtn24 or st.session_state.formbtn24_state:
                         st.session_state.formbtn24_state = True
 
-                        st.title("Admin Panel")
-                        transport_id_to_del= st.text_input(
-                            "Enter Transport ID to DELETE:")
-                        # Get the trip_id input from the admin
+                        cur.execute("SELECT TransportID FROM Transportation")
+                        transp_ids = [row[0] for row in cur.fetchall()]
+                        transport_id_to_del = st.selectbox(
+                            "Select a TransportID", transp_ids)
 
                         # Fetch existing data for the specified trip_id
                         existing_data = fetch_transport_data(
@@ -830,7 +912,7 @@ try:
                                     con.commit()
                                     st.success(
                                         f"Destination with ID {transport_id_to_del} deleted successfully!")
-
+                    st.markdown("---")
                     formbtn25 = st.button("DELETE Recommendation")
 
                     if "formbtn25_state" not in st.session_state:
@@ -839,12 +921,11 @@ try:
                     if formbtn25 or st.session_state.formbtn25_state:
                         st.session_state.formbtn25_state = True
 
-                        st.title("Admin Panel")
-                        rcmd_id_to_del = st.text_input(
-                            "Enter Recommendation ID to DELETE:")
-                        # Get the trip_id input from the admin
-
-                        # Fetch existing data for the specified trip_id
+                        cur.execute(
+                            "SELECT RecommendationID FROM Recommendation")
+                        rcmd_ids = [row[0] for row in cur.fetchall()]
+                        rcmd_id_to_del = st.selectbox(
+                            "Select a RecommendationID", rcmd_ids)
                         existing_data = fetch_recommendation_data(
                             rcmd_id_to_del)
 
@@ -870,7 +951,7 @@ try:
                                     st.success(
                                         f"Destination with ID {rcmd_id_to_del} deleted successfully!")
                     
-                    
+                    st.markdown("---")
                     formbtn26 = st.button("Delete Activity")
 
                     if "formbtn26_state" not in st.session_state:
@@ -879,12 +960,10 @@ try:
                     if formbtn26 or st.session_state.formbtn26_state:
                         st.session_state.formbtn26_state = True
 
-                        st.title("Admin Panel")
-                        act_id_to_del = st.text_input(
-                            "Enter Activity ID to Delete:")
-                        # Get the trip_id input from the admin
-
-                        # Fetch existing data for the specified trip_id
+                        cur.execute("SELECT ActivityID FROM Activity")
+                        act_ids = [row[0] for row in cur.fetchall()]
+                        act_id_to_del = st.selectbox(
+                            "Select a ActivityID", act_ids)
                         existing_data = fetch_activity_data(
                             act_id_to_del)
 
@@ -912,7 +991,8 @@ try:
                                     con.commit()
                                     st.success(
                                         f"Destination with ID {act_id_to_del} deleted successfully!")
-                                    
+
+                    st.markdown("---")
                     formbtn27 = st.button("Delete Weather")
 
                     if "formbtn27_state" not in st.session_state:
@@ -921,12 +1001,11 @@ try:
                     if formbtn27 or st.session_state.formbtn27_state:
                         st.session_state.formbtn27_state = True
 
-                        st.title("Admin Panel")
-                        wthr_id_to_del = st.text_input(
-                            "Enter Weather ID to Delete:")
-                        # Get the trip_id input from the admin
+                        cur.execute("SELECT WeatherID FROM Weather")
+                        whtr_ids = [row[0] for row in cur.fetchall()]
+                        wthr_id_to_del = st.selectbox(
+                            "Select a WeatherID", whtr_ids)
 
-                        # Fetch existing data for the specified trip_id
                         existing_data = fetch_weather_data(
                             wthr_id_to_del)
 
@@ -952,11 +1031,498 @@ try:
                                     st.success(
                                         f"Destination with ID {wthr_id_to_del} deleted successfully!")
 
+                def render_alter():
+                    st.title("Alter Page -to alter tables")
+                    st.write("Welcome to the Alter Page!")
+                    st.write("Click on the sidebar to navigate to other pages.")
+
+                    formbtn31 = st.button("Alter trip")
+
+                    if "formbtn31_state" not in st.session_state:
+                        st.session_state.formbtn31_state = False
+
+                    if formbtn31 or st.session_state.formbtn31_state:
+                        st.session_state.formbtn31_state = True
+
+                        st.title("Alter Trip Table")
+
+    # Get user input on the action to perform
+                        action = st.radio("Select action:", [
+                                        'Add Column', 'Modify Column', 'Drop Column'])
+
+                        if action == 'Add Column':
+                            new_column_name = st.text_input("Enter new column name:")
+                            new_column_type = st.text_input("Enter new column data type:")
+                            if st.button("Add Column"):
+                                try:
+                                    # Execute SQL to add a new column
+                                    cur.execute(
+                                        f"ALTER TABLE trip ADD COLUMN {new_column_name} {new_column_type};")
+                                    con.commit()
+                                    st.success(f"Column {new_column_name} added successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(f"Error adding column: {str(e)}")
+
+                        elif action == 'Modify Column':
+                            column_to_modify = st.text_input("Enter column name to modify:")
+                            new_data_type = st.text_input("Enter new data type:")
+                            if st.button("Modify Column"):
+                                try:
+                                    # Execute SQL to modify a column's data type
+                                    cur.execute(
+                                        f"ALTER TABLE trip DROP COLUMN {column_to_modify};")
+                                    cur.execute(
+                                        
+                                        f"ALTER TABLE trip ADD COLUMN {column_to_modify} {new_data_type};")
+                                    st.success(f"Column {column_to_modify} modified successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(f"Error modifying column: {str(e)}")
+
+                        elif action == 'Drop Column':
+                            column_to_drop = st.text_input("Enter column name to drop:")
+                            if st.button("Drop Column"):
+                                try:
+                                    # Execute SQL to drop a column
+                                    cur.execute(f"ALTER TABLE trip DROP COLUMN {column_to_drop};")
+                                    con.commit()
+                                    st.success(f"Column {column_to_drop} dropped successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(f"Error dropping column: {str(e)}")
+
+                    st.markdown("---")
+
+                    formbtn32 = st.button("Alter Destination")
+
+                    if "formbtn32_state" not in st.session_state:
+                        st.session_state.formbtn32_state = False
+
+                    if formbtn32 or st.session_state.formbtn32_state:
+                        st.session_state.formbtn32_state = True
+
+                        st.title("Alter Destination Table")
+
+    # Get user input on the action to perform
+                        action = st.radio("Select action:", [
+                            'Add Column', 'Modify Column', 'Drop Column'])
+
+                        if action == 'Add Column':
+                            new_column_name = st.text_input(
+                                "Enter new column name:")
+                            new_column_type = st.text_input(
+                                "Enter new column data type:")
+                            if st.button("Add Column"):
+                                try:
+                                    # Execute SQL to add a new column
+                                    cur.execute(
+                                        f"ALTER TABLE Destination ADD COLUMN {new_column_name} {new_column_type};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {new_column_name} added successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(f"Error adding column: {str(e)}")
+
+                        elif action == 'Modify Column':
+                            column_to_modify = st.text_input(
+                                "Enter column name to modify:")
+                            new_data_type = st.text_input(
+                                "Enter new data type:")
+                            if st.button("Modify Column"):
+                                try:
+                                    # Execute SQL to modify a column's data type
+                                    cur.execute(
+                                        f"ALTER TABLE Destination DROP COLUMN {column_to_modify};")
+                                    cur.execute(
+
+                                        f"ALTER TABLE Destination ADD COLUMN {column_to_modify} {new_data_type};")
+                                    st.success(
+                                        f"Column {column_to_modify} modified successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error modifying column: {str(e)}")
+
+                        elif action == 'Drop Column':
+                            column_to_drop = st.text_input(
+                                "Enter column name to drop:")
+                            if st.button("Drop Column"):
+                                try:
+                                    # Execute SQL to drop a column
+                                    cur.execute(
+                                        f"ALTER TABLE Destination DROP COLUMN {column_to_drop};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {column_to_drop} dropped successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error dropping column: {str(e)}")
+                                    
+                    st.markdown("---")
+
+                    formbtn33 = st.button("Alter Accommodation")
+
+                    if "formbtn33_state" not in st.session_state:
+                        st.session_state.formbtn33_state = False
+
+                    if formbtn33 or st.session_state.formbtn33_state:
+                        st.session_state.formbtn33_state = True
+
+                        st.title("Alter Accommodation Table")
+
+    # Get user input on the action to perform
+                        action = st.radio("Select action:", [
+                            'Add Column', 'Modify Column', 'Drop Column'])
+
+                        if action == 'Add Column':
+                            new_column_name = st.text_input(
+                                "Enter new column name:")
+                            new_column_type = st.text_input(
+                                "Enter new column data type:")
+                            if st.button("Add Column"):
+                                try:
+                                    # Execute SQL to add a new column
+                                    cur.execute(
+                                        f"ALTER TABLE Accomodation ADD COLUMN {new_column_name} {new_column_type};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {new_column_name} added successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(f"Error adding column: {str(e)}")
+
+                        elif action == 'Modify Column':
+                            column_to_modify = st.text_input(
+                                "Enter column name to modify:")
+                            new_data_type = st.text_input(
+                                "Enter new data type:")
+                            if st.button("Modify Column"):
+                                try:
+                                    # Execute SQL to modify a column's data type
+                                    cur.execute(
+                                        f"ALTER TABLE Accomodation DROP COLUMN {column_to_modify};")
+                                    cur.execute(
+
+                                        f"ALTER TABLE Accomodation ADD COLUMN {column_to_modify} {new_data_type};")
+                                    st.success(
+                                        f"Column {column_to_modify} modified successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error modifying column: {str(e)}")
+
+                        elif action == 'Drop Column':
+                            column_to_drop = st.text_input(
+                                "Enter column name to drop:")
+                            if st.button("Drop Column"):
+                                try:
+                                    # Execute SQL to drop a column
+                                    cur.execute(
+                                        f"ALTER TABLE Accomodation DROP COLUMN {column_to_drop};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {column_to_drop} dropped successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error dropping column: {str(e)}")
+
+                    st.markdown("---")
+
+                    formbtn34 = st.button("Alter Transportation")
+
+                    if "formbtn34_state" not in st.session_state:
+                        st.session_state.formbtn34_state = False
+
+                    if formbtn34 or st.session_state.formbtn34_state:
+                        st.session_state.formbtn34_state = True
+
+                        st.title("Alter Transportation Table")
+
+    # Get user input on the action to perform
+                        action = st.radio("Select action:", [
+                            'Add Column', 'Modify Column', 'Drop Column'])
+
+                        if action == 'Add Column':
+                            new_column_name = st.text_input(
+                                "Enter new column name:")
+                            new_column_type = st.text_input(
+                                "Enter new column data type:")
+                            if st.button("Add Column"):
+                                try:
+                                    # Execute SQL to add a new column
+                                    cur.execute(
+                                        f"ALTER TABLE Transportation ADD COLUMN {new_column_name} {new_column_type};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {new_column_name} added successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(f"Error adding column: {str(e)}")
+
+                        elif action == 'Modify Column':
+                            column_to_modify = st.text_input(
+                                "Enter column name to modify:")
+                            new_data_type = st.text_input(
+                                "Enter new data type:")
+                            if st.button("Modify Column"):
+                                try:
+                                    # Execute SQL to modify a column's data type
+                                    cur.execute(
+                                        f"ALTER TABLE Transportation DROP COLUMN {column_to_modify};")
+                                    cur.execute(
+
+                                        f"ALTER TABLE Transportation ADD COLUMN {column_to_modify} {new_data_type};")
+                                    st.success(
+                                        f"Column {column_to_modify} modified successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error modifying column: {str(e)}")
+
+                        elif action == 'Drop Column':
+                            column_to_drop = st.text_input(
+                                "Enter column name to drop:")
+                            if st.button("Drop Column"):
+                                try:
+                                    # Execute SQL to drop a column
+                                    cur.execute(
+                                        f"ALTER TABLE Transportation DROP COLUMN {column_to_drop};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {column_to_drop} dropped successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error dropping column: {str(e)}")
+                                    
+                    st.markdown("---")
+                    formbtn35 = st.button("Alter Recommendation")
+
+                    if "formbtn35_state" not in st.session_state:
+                        st.session_state.formbtn35_state = False
+
+                    if formbtn35 or st.session_state.formbtn35_state:
+                        st.session_state.formbtn35_state = True
+
+                        st.title("Alter Recommendation Table")
+
+    # Get user input on the action to perform
+                        action = st.radio("Select action:", [
+                            'Add Column', 'Modify Column', 'Drop Column'])
+
+                        if action == 'Add Column':
+                            new_column_name = st.text_input(
+                                "Enter new column name:")
+                            new_column_type = st.text_input(
+                                "Enter new column data type:")
+                            if st.button("Add Column"):
+                                try:
+                                    # Execute SQL to add a new column
+                                    cur.execute(
+                                        f"ALTER TABLE Recommendation ADD COLUMN {new_column_name} {new_column_type};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {new_column_name} added successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(f"Error adding column: {str(e)}")
+
+                        elif action == 'Modify Column':
+                            column_to_modify = st.text_input(
+                                "Enter column name to modify:")
+                            new_data_type = st.text_input(
+                                "Enter new data type:")
+                            if st.button("Modify Column"):
+                                try:
+                                    # Execute SQL to modify a column's data type
+                                    cur.execute(
+                                        f"ALTER TABLE Recommendation DROP COLUMN {column_to_modify};")
+                                    cur.execute(
+
+                                        f"ALTER TABLE Recommendation ADD COLUMN {column_to_modify} {new_data_type};")
+                                    st.success(
+                                        f"Column {column_to_modify} modified successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error modifying column: {str(e)}")
+
+                        elif action == 'Drop Column':
+                            column_to_drop = st.text_input(
+                                "Enter column name to drop:")
+                            if st.button("Drop Column"):
+                                try:
+                                    # Execute SQL to drop a column
+                                    cur.execute(
+                                        f"ALTER TABLE Recommendation DROP COLUMN {column_to_drop};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {column_to_drop} dropped successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error dropping column: {str(e)}")
+                                    
+                    st.markdown("---")
+
+                    formbtn36 = st.button("Alter Activity")
+
+                    if "formbtn36_state" not in st.session_state:
+                        st.session_state.formbtn36_state = False
+
+                    if formbtn36 or st.session_state.formbtn36_state:
+                        st.session_state.formbtn36_state = True
+
+                        st.title("Alter Accommodation Table")
+
+    # Get user input on the action to perform
+                        action = st.radio("Select action:", [
+                            'Add Column', 'Modify Column', 'Drop Column'])
+
+                        if action == 'Add Column':
+                            new_column_name = st.text_input(
+                                "Enter new column name:")
+                            new_column_type = st.text_input(
+                                "Enter new column data type:")
+                            if st.button("Add Column"):
+                                try:
+                                    # Execute SQL to add a new column
+                                    cur.execute(
+                                        f"ALTER TABLE Activity ADD COLUMN {new_column_name} {new_column_type};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {new_column_name} added successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(f"Error adding column: {str(e)}")
+
+                        elif action == 'Modify Column':
+                            column_to_modify = st.text_input(
+                                "Enter column name to modify:")
+                            new_data_type = st.text_input(
+                                "Enter new data type:")
+                            if st.button("Modify Column"):
+                                try:
+                                    # Execute SQL to modify a column's data type
+                                    cur.execute(
+                                        f"ALTER TABLE Activity DROP COLUMN {column_to_modify};")
+                                    cur.execute(
+
+                                        f"ALTER TABLE Activity ADD COLUMN {column_to_modify} {new_data_type};")
+                                    st.success(
+                                        f"Column {column_to_modify} modified successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error modifying column: {str(e)}")
+
+                        elif action == 'Drop Column':
+                            column_to_drop = st.text_input(
+                                "Enter column name to drop:")
+                            if st.button("Drop Column"):
+                                try:
+                                    # Execute SQL to drop a column
+                                    cur.execute(
+                                        f"ALTER TABLE Activity DROP COLUMN {column_to_drop};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {column_to_drop} dropped successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error dropping column: {str(e)}")
+                    st.markdown("---")
+
+                    formbtn37 = st.button("Alter Weather")
+
+                    if "formbtn37_state" not in st.session_state:
+                        st.session_state.formbtn37_state = False
+
+                    if formbtn37 or st.session_state.formbtn37_state:
+                        st.session_state.formbtn37_state = True
+
+                        st.title("Alter Weather Table")
+
+    # Get user input on the action to perform
+                        action = st.radio("Select action:", [
+                            'Add Column', 'Modify Column', 'Drop Column'])
+
+                        if action == 'Add Column':
+                            new_column_name = st.text_input(
+                                "Enter new column name:")
+                            new_column_type = st.text_input(
+                                "Enter new column data type:")
+                            if st.button("Add Column"):
+                                try:
+                                    # Execute SQL to add a new column
+                                    cur.execute(
+                                        f"ALTER TABLE Weather ADD COLUMN {new_column_name} {new_column_type};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {new_column_name} added successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(f"Error adding column: {str(e)}")
+
+                        elif action == 'Modify Column':
+                            column_to_modify = st.text_input(
+                                "Enter column name to modify:")
+                            new_data_type = st.text_input(
+                                "Enter new data type:")
+                            if st.button("Modify Column"):
+                                try:
+                                    # Execute SQL to modify a column's data type
+                                    cur.execute(
+                                        f"ALTER TABLE Weather DROP COLUMN {column_to_modify};")
+                                    cur.execute(
+
+                                        f"ALTER TABLE Weather ADD COLUMN {column_to_modify} {new_data_type};")
+                                    st.success(
+                                        f"Column {column_to_modify} modified successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error modifying column: {str(e)}")
+
+                        elif action == 'Drop Column':
+                            column_to_drop = st.text_input(
+                                "Enter column name to drop:")
+                            if st.button("Drop Column"):
+                                try:
+                                    # Execute SQL to drop a column
+                                    cur.execute(
+                                        f"ALTER TABLE Weather DROP COLUMN {column_to_drop};")
+                                    con.commit()
+                                    st.success(
+                                        f"Column {column_to_drop} dropped successfully!")
+                                except sqlite3.Error as e:
+                                    st.error(
+                                        f"Error dropping column: {str(e)}")
+
+
+                    st.markdown("---")
+
+                    formbtn41 = st.button("Datatype")
+                    if "formbtn41_state" not in st.session_state:
+                        st.session_state.formbtn41_state = False
+
+                    if formbtn41 or st.session_state.formbtn41_state:
+                        st.session_state.formbtn41_state = True
+
+                        table_name = st.text_input("Enter Table Name :")
+                        column_name = st.text_input("Enter Col Name :")
+
+                        if(table_name and column_name):
+    # Execute the PRAGMA statement to get column information
+                            cur.execute(f"PRAGMA table_info({table_name})")
+
+        # Fetch all rows from the result set
+                            columns_info = cur.fetchall()
+
+        # Find the datatype of the specified column
+                            datatype = None
+                            for column_info in columns_info:
+                                if column_info[1] == column_name:
+                                    datatype = column_info[2]
+                                    break
+
+                                # Display the datatype
+                            if datatype is not None:
+                                st.write(
+                                    f"The datatype of column '{column_name}' in table '{table_name}' is: {datatype}")
+                            else:
+                                st.write(
+                                    f"Column '{column_name}' not found in table '{table_name}'")
+
                 def main():
                     st.sidebar.title("Navigation")
 
                     selected_page = st.sidebar.radio(
-                        "Select a Page", ["Home", "create", "read", "update", "delete"])
+                        "Select a Page", ["Home", "create", "read", "update", "delete","alter"])
                     if selected_page == "Home":
                         render_home()
                     elif selected_page == "create":
@@ -967,6 +1533,8 @@ try:
                         render_update()
                     elif selected_page == "delete":
                         render_delete()
+                    elif selected_page == "alter":
+                        render_alter()
 
                 if __name__ == "__main__":
                     main()
