@@ -418,7 +418,7 @@ try:
                         st.session_state.formbtn11_state = False
 
                     if formbtn11 or st.session_state.formbtn11_state:
-                        st.session_state.formbtn1_state = True
+                        st.session_state.formbtn11_state = True
                     
                         st.title("Admin Panel")
                         trip_id_to_edit = st.text_input(
@@ -672,6 +672,285 @@ try:
                     st.title("Page 4")
                     st.write("Welcome to Page 4.")
                     st.write("Explore and enjoy your stay!")
+                    
+                    
+                    formbtn21 = st.button("Delete a Trip")
+
+                    if "formbtn21_state" not in st.session_state:
+                        st.session_state.formbtn21_state = False
+
+                    if formbtn21 or st.session_state.formbtn21_state:
+                        st.session_state.formbtn21_state = True
+
+                        st.title("Admin Panel")
+                        trip_id_to_del = st.text_input(
+                            "Enter Trip ID to del:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_trip_data(trip_id_to_del)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='trip_UPDATE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Deleting Trip Details:")
+                                st.write(
+                                    "Name :",existing_data[1])
+                                st.write("Start Month:",existing_data[2])
+                                st.write(
+                                    "End Month:", existing_data[3])
+                                st.write(
+                                    "Description:", existing_data[4])
+                                st.write(
+                                    "Budget:", existing_data[5])
+                                if (st.form_submit_button(label="Del Trip") and trip_id_to_del):
+                                    cur.execute("DELETE FROM trip WHERE TripID = ?", (trip_id_to_del,))
+        
+        # Commit the changes to the database
+                                    con.commit()
+                                    
+                                    st.success(f"Trip with ID {trip_id_to_del} deleted successfully!")
+                    
+                    
+                    formbtn22 = st.button("Delete Destination")
+
+                    if "formbtn22_state" not in st.session_state:
+                        st.session_state.formbtn22_state = False
+
+                    if formbtn22 or st.session_state.formbtn22_state:
+                        st.session_state.formbtn22_state = True
+
+                        st.title("Admin Panel")
+                        dest_id_to_del = st.text_input(
+                            "Enter Destination ID to Delete:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_dest_data(dest_id_to_del)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='dest_DElETE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Deleting Destination Details:")
+                                st.write(
+                                    "Destination Name :", existing_data[2])
+                                st.write(
+                                    "country :",existing_data[3])
+                                st.write(
+                                    "city :", existing_data[4])
+                                st.write(
+                                    "Description :",existing_data[5])
+
+                                if (st.form_submit_button(label="Del Dest") and dest_id_to_del):
+                                    cur.execute(
+                                        "DELETE FROM Destination WHERE DestinationID = ?", (dest_id_to_del,))
+
+                                    con.commit()
+                                    st.success(
+                                        f"Destination with ID {dest_id_to_del} deleted successfully!")
+
+                    formbtn23 = st.button("DELETE Accommodation")
+
+                    if "formbtn23_state" not in st.session_state:
+                        st.session_state.formbtn23_state = False
+
+                    if formbtn23 or st.session_state.formbtn23_state:
+                        st.session_state.formbtn23_state = True
+
+                        st.title("Admin Panel")
+                        accmd_id_to_del = st.text_input(
+                            "Enter Accomodation ID to DEL:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_accmd_data(accmd_id_to_del)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='dest_DELETE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Deleting Accommodation Details:")
+                                st.write(
+                                    "Accomodation Name :",existing_data[2])
+                                st.write(
+                                    "type :", existing_data[3])
+                                st.write(
+                                    "Location :", existing_data[4])
+                                st.write(
+                                    "cost :", value=existing_data[5])
+
+                                if (st.form_submit_button(label="DELETE Accmd") and accmd_id_to_del):
+                                    cur.execute(
+                                        "DELETE FROM Accomodation WHERE AccomodationID = ?", (accmd_id_to_del,))
+
+                                    con.commit()
+                                    st.success(
+                                        f"Destination with ID {accmd_id_to_del} deleted successfully!")
+                    
+                    formbtn24 = st.button("Del a Transportation")
+
+                    if "formbtn24_state" not in st.session_state:
+                        st.session_state.formbtn24_state = False
+
+                    if formbtn24 or st.session_state.formbtn24_state:
+                        st.session_state.formbtn24_state = True
+
+                        st.title("Admin Panel")
+                        transport_id_to_del= st.text_input(
+                            "Enter Transport ID to DELETE:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_transport_data(
+                            transport_id_to_del)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='Transport_DELETE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Deleting Transport Details:")
+                                st.write(
+                                    "mode :", existing_data[1])
+                                st.write(
+                                    "Departure Date time :", existing_data[2])
+                                st.write(
+                                    "Arrival Date time :", existing_data[3])
+                                st.write(
+                                    "Departure Location :", existing_data[4])
+                                st.write(
+                                    "Arrival Location :", existing_data[5])
+                                st.write(
+                                    "Cost :", existing_data[6])
+                                if (st.form_submit_button(label="DELETE Transport") and transport_id_to_del):
+                                    cur.execute(
+                                        "DELETE FROM Transportation WHERE TransportID = ?", (transport_id_to_del,))
+
+                                    con.commit()
+                                    st.success(
+                                        f"Destination with ID {transport_id_to_del} deleted successfully!")
+
+                    formbtn25 = st.button("DELETE Recommendation")
+
+                    if "formbtn25_state" not in st.session_state:
+                        st.session_state.formbtn25_state = False
+
+                    if formbtn25 or st.session_state.formbtn25_state:
+                        st.session_state.formbtn25_state = True
+
+                        st.title("Admin Panel")
+                        rcmd_id_to_del = st.text_input(
+                            "Enter Recommendation ID to DELETE:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_recommendation_data(
+                            rcmd_id_to_del)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='Recommendation_UPDATE'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Deleting Recommendation Details:")
+                                st.write(
+                                    "Type :", existing_data[1])
+                                st.write(
+                                    "Name :", existing_data[2])
+                                st.write(
+                                    "Description :", existing_data[3])
+                                st.write(
+                                    "Rating :", existing_data[4])
+
+                                if (st.form_submit_button(label="Delete Recommendation") and rcmd_id_to_del):
+                                    cur.execute(
+                                        "DELETE FROM Recommendation WHERE RecommendationID = ?", (rcmd_id_to_del,))
+
+                                    con.commit()
+                                    st.success(
+                                        f"Destination with ID {rcmd_id_to_del} deleted successfully!")
+                    
+                    
+                    formbtn26 = st.button("Delete Activity")
+
+                    if "formbtn26_state" not in st.session_state:
+                        st.session_state.formbtn26_state = False
+
+                    if formbtn26 or st.session_state.formbtn26_state:
+                        st.session_state.formbtn26_state = True
+
+                        st.title("Admin Panel")
+                        act_id_to_del = st.text_input(
+                            "Enter Activity ID to Delete:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_activity_data(
+                            act_id_to_del)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='Activity_Delete'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.subheader("Edit Activity Details:")
+                                st.write(
+                                    "name :",existing_data[1])
+                                st.write(
+                                    "Description :", existing_data[2])
+                                st.write(
+                                    "Date :", existing_data[3])
+                                st.write(
+                                    "Time :", existing_data[4])
+                                st.write(
+                                    "Cost :", existing_data[5])
+
+                                if (st.form_submit_button(label="DELETE Activity") and act_id_to_del):
+
+                                    cur.execute(
+                                        "DELETE FROM Activity WHERE ActivityID = ?", (act_id_to_del,))
+
+                                    con.commit()
+                                    st.success(
+                                        f"Destination with ID {act_id_to_del} deleted successfully!")
+                                    
+                    formbtn27 = st.button("Delete Weather")
+
+                    if "formbtn27_state" not in st.session_state:
+                        st.session_state.formbtn27_state = False
+
+                    if formbtn27 or st.session_state.formbtn27_state:
+                        st.session_state.formbtn27_state = True
+
+                        st.title("Admin Panel")
+                        wthr_id_to_del = st.text_input(
+                            "Enter Weather ID to Delete:")
+                        # Get the trip_id input from the admin
+
+                        # Fetch existing data for the specified trip_id
+                        existing_data = fetch_weather_data(
+                            wthr_id_to_del)
+
+                        if existing_data:
+                            # Display the existing dat
+                            with st.form(key='Weather_delete'):
+                                # Display a form with input fields pre-filled with existing values
+                                st.header("Deleting Weather Details:")
+
+                                st.write(
+                                    "Date :", existing_data[1])
+                                st.write(
+                                    "Temparture :", existing_data[2])
+                                st.write(
+                                    "Conditions :", existing_data[3])
+
+                                if (st.form_submit_button(label="Delete Weather") and wthr_id_to_del):
+
+                                    cur.execute(
+                                        "DELETE FROM Weather WHERE WeatherID = ?", (wthr_id_to_del,))
+
+                                    con.commit()
+                                    st.success(
+                                        f"Destination with ID {wthr_id_to_del} deleted successfully!")
 
                 def main():
                     st.sidebar.title("Navigation")
