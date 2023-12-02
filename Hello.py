@@ -6,6 +6,12 @@ from st_clickable_images import clickable_images
 import re
 from html.parser import HTMLParser
 
+#from backend import speech
+
+
+
+
+
 class NewlineSelectbox:
     def __init__(self, label, options):
         self.label = label
@@ -68,49 +74,34 @@ try:
                 
                 
                 # Fetch data from the 'trip' table
-                select_trips = "SELECT TripName || '\n' || Description || '\n' || Budget FROM trip;"
+                select_trips = "SELECT TripName, Description, Budget FROM trip;"
                 trips_data = cur.execute(select_trips).fetchall()
     
                 # Streamlit app
                 st.title('Choose your Dream Trip!')
 
                 # Create a selectbox with trip names
-                options = []
-                try:
-                    for row in trips_data:
-                        string_to_display = row[0]  # Replace 'column_index' with the actual column index
-                        formatted_string = re.sub('\n', '<br>', string_to_display)
-                        options.append(int(formatted_string))
-                except Exception as e:
-                    print(e)
-
-                # Render the selectbox
-                #st.info(options)
-                #trip_option = st.selectbox('Select a string:', options)
-                #trip_option = st.selectbox('Select your dream trip!', trips_data)
-                try:
-                    # Create an instance of the custom selectbox component
-                    newline_selectbox = NewlineSelectbox('Select a string:', options)
-
-                    # Render the custom selectbox component
-                    selected_string = newline_selectbox.render()
-                    st.write('Selected string:', selected_string)
-                except Exception as e:
-                    print(e)
-
+                options = trips_data
+                trip_option = st.selectbox('Select your trip:', options)
+                trip_option = st.selectbox('Select your dream trip!', trips_data)
                     
                 
-                """if trip_option:
+                if trip_option:
                         st.title("Your destination options")
                         select_dest = f"select Name, City, Description, Country,  from Destination where Destination.TripID = Trip.TripID"
-                """     
-                        
-                
+                        trips_data = cur.execute(select_dest).fetchall()
+                        trip_option = st.selectbox('Select your trip:', trips_data)
                 
                 
                 if st.button("Plan My Trip"):
                     st.success(
                         f"Trip planned from {start_date} to {end_date}")
+
+
+
+
+
+
 
 
                 st.info("Explore our amazing features and make your trips memorable!")
