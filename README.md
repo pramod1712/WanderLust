@@ -11,6 +11,7 @@ Budget Management: Track and manage your trip budget with ease. WanderLuxe can a
 Project Contributors
 Pramod Seshasayanan
 Kanith Kumar
+from PES University, Bangalore
 
 Project Structure
 temp_admin.py: Contains the code for the administration panel, where admins can add, update, and delete trip details.
@@ -31,6 +32,13 @@ Real-time Transportation Updates: Get access to real-time transportation options
 Google Authentication: Sign in using your Google account for added convenience and security.
 Reporting Issues: Users can report technical issues or suggest improvements to the admin for a better user experience.
 Help and Support: Find assistance and valuable travel recommendations within the app.
+
+This is the app you get when you run `streamlit hello`, extracted as its own app.
+
+Edit [Hello.py](./Hello.py) to customize this app to your heart's desire. ❤️
+
+Check it out on [Streamlit Community Cloud]()
+
 
 Contributing
 We welcome contributions from the community to make WanderLuxe even better. Here's how you can contribute:
