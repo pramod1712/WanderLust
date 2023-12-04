@@ -8,10 +8,6 @@ from html.parser import HTMLParser
 
 #from backend import speech
 
-
-
-
-
 class NewlineSelectbox:
     def __init__(self, label, options):
         self.label = label
