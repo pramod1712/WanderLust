@@ -24,7 +24,7 @@ def insert_user(email, username, password):
     return admin_db.put({'key': email, 'username': username, 'password': password, 'date_joined': date_joined})
 
 
-def fetch_users():
+def fetch_admins():
     """
     Fetch Users
     :return Dictionary of Users:

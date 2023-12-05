@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 
-UNSPLASH_ACCESS_KEY = 'your_unsplash_access_key'  # Replace with your Unsplash access key
+UNSPLASH_ACCESS_KEY = 'axqzsCUgyumeqGjPAu2blRwRJCz3SJiFc6_xev8OZH0'  # Replace with your Unsplash access key
 
 def fetch_image_url(title):
     # Search for images on Unsplash based on the title
@@ -35,6 +35,7 @@ def main():
             st.image(image_url, caption=user_input, use_column_width=True, output_format='JPEG', width=resolution)
         else:
             st.write("Image not found")
+
 
 if __name__ == "__main__":
     main()
