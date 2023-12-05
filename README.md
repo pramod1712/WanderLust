@@ -2,25 +2,24 @@ WanderLust - Your Ultimate Trip Planner and Management Solution
 
 WanderLust is a powerful and intuitive trip planner and management solution that can help you organize and plan your travel adventures with ease. Whether you are a solo traveler or a group of friends, WanderLust has got you covered!
 
-![Home Page](wanderlust_1.jpg)
+![Admin Home Page](https://github.com/pramod1712/WanderLust/assets/65847296/f37effdb-660d-4570-bdf0-e3139aadf90f)
+
+![Admin Panel](https://github.com/pramod1712/WanderLust/assets/65847296/1a0a6bd5-56b1-4e9d-96ed-350be8bc7da4)
 
 Key Features
-User Authentication: Securely create an account and log in with your credentials.
 Customized Trip Planning: Plan and create personalized trips by adding destinations, activities, accommodations, and transportation options.
 Budget Management: Track and manage your trip budget with ease. WanderLust can also adjust prices and currencies based on the user's country.
+User Authentication: Securely create an account and log in with your credentials.
 
 Project Contributors
 Pramod Seshasayanan
 Kanith Kumar
-from PES University, Bangalore
+from PES University, Bangalore, India
 
-Project Structure
-temp_admin.py: Contains the code for the administration panel, where admins can add, update, and delete trip details.
-TripPlanner.py: The main file that powers the WanderLust application, handling user authentication, trip planning, and management.
-Hello.py: The original Streamlit hello app, which serves as the starting point of WanderLust. Customized to fit the requirements of the project.
-dependencies_admin.py: Contains the required dependencies and helper functions for the administration panel.
-[logo.png: WanderLust logo used in the README.]
-How to Run the App
+![User Home Page](https://github.com/pramod1712/WanderLust/assets/65847296/12bf714d-5e8d-43d4-a7c4-b9987bf75233)
+![Selecting Trip Options](https://github.com/pramod1712/WanderLust/assets/65847296/1fb3cfbd-4b6d-495c-be08-ac20d9797e92)
+
+How to Run the App 
 Install the necessary dependencies: 
 Clone or Fork the repo
 command to run admin portal - streamlit run admin.py
