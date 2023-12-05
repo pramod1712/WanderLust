@@ -2,7 +2,7 @@ WanderLust - Your Ultimate Trip Planner and Management Solution
 
 WanderLust is a powerful and intuitive trip planner and management solution that can help you organize and plan your travel adventures with ease. Whether you are a solo traveler or a group of friends, WanderLust has got you covered!
 
-![Home Page](screenshots/wanderlust_1.jpg)
+![Home Page](wanderlust_1.jpg)
 
 Key Features
 User Authentication: Securely create an account and log in with your credentials.
