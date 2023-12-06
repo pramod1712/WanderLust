@@ -40,11 +40,6 @@ def speak():
     engine.runAndWait()
 
 
-
-
-
-
-
 DETA_KEY = 'd0dcu4dmndq_wYDzZtDV5VHNrqrbrZYpGF6TH5H9vphv'
 #DETA_KEY_ADMIN = 'd029nxxjmxf_f592BNXFs8XV33y7fDgyGYNi3XtWJckT'
 

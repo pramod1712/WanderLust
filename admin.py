@@ -4,10 +4,6 @@ from dependancies_admin import sign_up, fetch_admins
 import sqlite3
 import pandas as pd
 
-    
-
-    
-
 def fetch_trip_data(trip_id):
     # Fetch existing values for the specified trip_id from the 'trip' table
     cur.execute("SELECT * FROM trip WHERE TripID = ?", (trip_id,))
