@@ -1,6 +1,6 @@
 import streamlit as st
 import streamlit_authenticator as stauth
-from dependancies import sign_up, fetch_users, get_symbol
+from dependancies_user import sign_up, fetch_users, get_symbol
 import sqlite3
 from st_clickable_images import clickable_images
 import re
