@@ -6,7 +6,7 @@ from deta import Deta
 
 #from backend import speech
 
-
+'''
 import pyttsx3
 
 engine=pyttsx3.init()
@@ -38,6 +38,7 @@ Join the journey to explore the world effortlessly and make unforgettable memori
 def speak():
     engine.say(welcome_text)
     engine.runAndWait()
+'''
 
 
 DETA_KEY = 'd0dcu4dmndq_wYDzZtDV5VHNrqrbrZYpGF6TH5H9vphv'
